@@ -5,7 +5,7 @@ import { syncBuiltinESMExports } from 'node:module'
 import { homedir, tmpdir } from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { deployModes, dshHome, getStatus, installOne, reconcileProfileBundles, repairMode, scanModes, scanPlugins, uninstallModes, uninstallOne } from '../lib/index.js'
+import { activeProfile, deployModes, dshHome, getStatus, healPresetPlanePlugins, installOne, reconcileProfileBundles, repairMode, scanModes, scanPlugins, uninstallModes, uninstallOne } from '../lib/index.js'
 import { createManagerFixture } from './helpers/fixture.mjs'
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -225,6 +225,72 @@ test('reconcileProfileBundles clears preset-plane pollution without an install',
     // Idempotent: a clean manifest is left untouched, and rewrites nothing.
     const before = readFileSync(fixture.profilePackage, 'utf8')
     assert.equal(reconcileProfileBundles(fixture.root), null)
+    assert.equal(readFileSync(fixture.profilePackage, 'utf8'), before)
+  } finally {
+    fixture.cleanup()
+  }
+})
+
+test('activeProfile detects the profile from desktop positional argv', () => {
+  const originalArgv = [...process.argv]
+  try {
+    // The packaged desktop host passes the profile directory as a positional
+    // argument instead of `--profile`, with the dsh dir, runtime, pnpm and
+    // bin paths around it.
+    process.argv = ['node', '/Applications/DeepSeek Harness.app/Contents/Resources/app.asar/dsh/node_modules/@deepseek-ai/dsh-desktop-host/lib/index.js', '/Applications/DeepSeek Harness.app/Contents/Resources/app.asar/dsh', '/Users/tester/.dsh/profiles/desktop', '/Applications/DeepSeek Harness.app/Contents/Resources/runtime/primary-runtime', '/Applications/DeepSeek Harness.app/Contents/Resources/runtime/pnpm/bin/pnpm.mjs']
+    assert.equal(activeProfile(), 'desktop')
+    process.argv = ['/usr/local/bin/dsh', 'serve', '/Users/tester/.dsh/profiles/desktop/']
+    assert.equal(activeProfile(), 'desktop')
+    process.argv = ['node', 'C:\\Users\\tester\\.dsh\\profiles\\desktop']
+    assert.equal(activeProfile(), 'desktop')
+    process.argv = ['node', 'index.js', '--profile', 'custom', '/Users/tester/.dsh/profiles/desktop']
+    assert.equal(activeProfile(), 'custom')
+    process.argv = ['node', 'index.js']
+    assert.equal(activeProfile(), 'web')
+  } finally {
+    process.argv = originalArgv
+  }
+})
+
+test('healPresetPlanePlugins restores stranded preset-plane dependencies', () => {
+  const fixture = createManagerFixture({ plugins: ['dsh-scanner-tools', 'dsh-semgrep-audit', 'dsh-hunter', 'dsh-sec-enforce'] })
+  try {
+    writeFileSync(path.join(fixture.root, 'package.json'), `${JSON.stringify({ name: '@dsh-external/dsh-redteam-model', version: '1.0.0' }, null, 2)}\n`, 'utf8')
+    const manifest = JSON.parse(readFileSync(fixture.profilePackage, 'utf8'))
+    // The collection and a host-plane plugin made it into this profile, but
+    // the pre-fix profile detector stranded the preset-plane dependencies in
+    // `web`, and the CLI bundle reconcile left a preset-plane bundle row.
+    manifest.dependencies['@dsh-external/dsh-redteam-model'] = `link:${fixture.root}`
+    manifest.dependencies['@dsh-external/dsh-hunter'] = `link:${path.join(fixture.root, 'plugins', 'dsh-hunter')}`
+    manifest.dsh.profile.bundles.push('@dsh-external/dsh-scanner-tools')
+    writeFileSync(fixture.profilePackage, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
+
+    assert.match(healPresetPlanePlugins(fixture.root) ?? '', /restored preset-plane dependencies: @dsh-external\/dsh-scanner-tools, @dsh-external\/dsh-semgrep-audit/)
+    const healed = JSON.parse(readFileSync(fixture.profilePackage, 'utf8'))
+    assert.equal(healed.dependencies['@dsh-external/dsh-scanner-tools'], `link:${path.join(fixture.root, 'plugins', 'dsh-scanner-tools')}`)
+    assert.equal(healed.dependencies['@dsh-external/dsh-semgrep-audit'], `link:${path.join(fixture.root, 'plugins', 'dsh-semgrep-audit')}`)
+    assert.equal(healed.dependencies['@dsh-external/dsh-hunter'], `link:${path.join(fixture.root, 'plugins', 'dsh-hunter')}`)
+    // Host-plane plugins stay opt-in: only the preset-plane pair is restored.
+    assert.equal(healed.dependencies['@dsh-external/dsh-sec-enforce'], undefined)
+    assert.equal(healed.dsh.profile.bundles.includes('@dsh-external/dsh-scanner-tools'), false)
+    // Idempotent: a healed manifest is left untouched, and rewrites nothing.
+    const before = readFileSync(fixture.profilePackage, 'utf8')
+    assert.equal(healPresetPlanePlugins(fixture.root), null)
+    assert.equal(readFileSync(fixture.profilePackage, 'utf8'), before)
+  } finally {
+    fixture.cleanup()
+  }
+})
+
+test('healPresetPlanePlugins leaves a profile without the collection alone', () => {
+  const fixture = createManagerFixture({ plugins: ['dsh-scanner-tools', 'dsh-semgrep-audit'] })
+  try {
+    writeFileSync(path.join(fixture.root, 'package.json'), `${JSON.stringify({ name: '@dsh-external/dsh-redteam-model', version: '1.0.0' }, null, 2)}\n`, 'utf8')
+    const manifest = JSON.parse(readFileSync(fixture.profilePackage, 'utf8'))
+    manifest.dependencies['@dsh-external/dsh-hunter'] = `link:${path.join(fixture.root, 'plugins', 'dsh-hunter')}`
+    writeFileSync(fixture.profilePackage, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
+    const before = readFileSync(fixture.profilePackage, 'utf8')
+    assert.equal(healPresetPlanePlugins(fixture.root), null)
     assert.equal(readFileSync(fixture.profilePackage, 'utf8'), before)
   } finally {
     fixture.cleanup()

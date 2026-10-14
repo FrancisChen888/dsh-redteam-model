@@ -99,13 +99,23 @@ export function dshHome(): string {
   return path.resolve(configured)
 }
 
-/** The profile this host process actually booted (`--profile <name>`), default web. */
+/**
+ * The profile this host process actually booted: `--profile <name>` wins,
+ * then a `profiles/<name>` positional argument (the packaged desktop host
+ * passes the profile directory that way instead of the flag), default web.
+ */
 export function activeProfile(): string {
   const argv = process.argv
   const flag = argv.indexOf('--profile')
   const next = flag !== -1 ? argv[flag + 1] : undefined
   if (next !== undefined && !next.startsWith('-')) {
     return next
+  }
+  for (const arg of argv) {
+    const profileTail = arg.match(/[\\/]profiles[\\/]([^\\/]+)[\\/]?$/)
+    if (profileTail !== null && profileTail[1] !== undefined) {
+      return profileTail[1]
+    }
   }
   return 'web'
 }
@@ -399,6 +409,46 @@ export function reconcileProfileBundles(root = locateRoot()): string | null {
   profile.dsh.profile.bundles = next
   writeProfileWithBackup(profile)
   return 'reconciled profile bundles: preset-plane rows removed, host-plane rows restored'
+}
+
+function collectionPackageName(root: string): string | undefined {
+  const raw = readJsonFile(path.join(root, 'package.json')) as Record<string, unknown> | null
+  return typeof raw?.name === 'string' && raw.name !== '' ? raw.name : undefined
+}
+
+/**
+ * Restore missing preset-plane plugin dependencies in the active profile.
+ *
+ * The preset registrations this package installs reference the preset-plane
+ * sub-plugins by bare package name, so a profile that carries this package
+ * must also carry those dependencies or its preset rows never start. Before
+ * positional profile detection landed, every mutation from the settings page
+ * went to the `web` profile regardless of the real one, which is how a
+ * Desktop install ended up with the collection present but the scanner and
+ * semgrep dependencies stranded in the wrong profile. Restoring the rows is
+ * the manager's own bookkeeping, exactly like the bundle reconcile; the
+ * harness's profile resolution (or the next install) materializes the links.
+ * @param root - collection root the plugin planes are read from.
+ * @returns a note when dependencies were restored, else null.
+ */
+export function healPresetPlanePlugins(root = locateRoot()): string | null {
+  const profile = readProfile()
+  if (profile === null) return null
+  profile.dependencies ??= {}
+  const self = collectionPackageName(root)
+  if (self === undefined || profile.dependencies[self] === undefined) return null
+  const restored: string[] = []
+  for (const plugin of scanPlugins(root)) {
+    if (plugin.mountPlane !== 'preset') continue
+    const pkg = pluginDependencyName(plugin)
+    if (profile.dependencies[pkg] !== undefined) continue
+    profile.dependencies[pkg] = `link:${plugin.dir}`
+    normalizeBundle(profile, plugin)
+    restored.push(pkg)
+  }
+  if (restored.length === 0) return null
+  writeProfileWithBackup(profile)
+  return `restored preset-plane dependencies: ${restored.join(', ')}`
 }
 
 function readInstalledVersion(plugin: PluginDescriptor): string | undefined {
