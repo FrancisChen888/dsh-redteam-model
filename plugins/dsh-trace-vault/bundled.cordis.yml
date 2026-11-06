@@ -1,0 +1,7 @@
+- id: dsh-trace-vault
+  name: './lib/index.js'
+  config:
+    capture: true
+    tools: true
+    retentionDays: 14
+    maxRows: 50000

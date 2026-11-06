@@ -32,7 +32,7 @@ const fakeSpawn = (script) => (bin, args, opts) => {
 {
 	const providers = createProviders(Config({}), fakeSpawn(() => {}));
 	const names = providers.map((p) => p.name);
-	ok("providers named claude-code and codex", names.includes("claude-code") && names.includes("codex"));
+	ok("providers named claude-code and codex", names.includes("claude-code") && names.includes("codex-redteam"));
 	ok("no structured capabilities (registry rejects such requests upstream)",
 		providers.every((p) => Object.keys(p.capabilities).length === 0));
 	ok("inheritsParentContext=false (fresh CLI context)",
@@ -168,7 +168,7 @@ const fakeSpawn = (script) => (bin, args, opts) => {
 		return c;
 	};
 	const providers = createProviders(Config({}), child);
-	const run = await providers.find((p) => p.name === "codex").start({ prompt: "verify chain", signal: null, cwd: "/w" });
+	const run = await providers.find((p) => p.name === "codex-redteam").start({ prompt: "verify chain", signal: null, cwd: "/w" });
 	const r = await run.result;
 	ok("codex argv head correct", seenArgs[0] === "exec" && seenArgs.includes("--sandbox") && seenArgs.includes("workspace-write") && seenArgs.includes("-C") && seenArgs.includes("-o"));
 	ok("codex run completes with stdout fallback (no -o content)", r.stopReason === "completed" && r.output[0].text === "codex final");
@@ -187,7 +187,7 @@ const fakeSpawn = (script) => (bin, args, opts) => {
 	const rc = await providers.find((p) => p.name === "claude-code").start({ prompt: "x", signal: null });
 	const r1 = await rc.result;
 	ok("claude error carries codex fallback hint", r1.stopReason === "error" && r1.output[0].text.includes("subagent_codex") && r1.output[0].text.includes("报告须注明"));
-	const rx = await providers.find((p) => p.name === "codex").start({ prompt: "x", signal: null, cwd: "/tmp" });
+	const rx = await providers.find((p) => p.name === "codex-redteam").start({ prompt: "x", signal: null, cwd: "/tmp" });
 	const r2 = await rx.result;
 	ok("codex error carries native fallback hint", r2.stopReason === "error" && r2.output[0].text.includes("subagent/subagent_fork") && !r2.output[0].text.includes("subagent_codex"));
 	const okRun = () => (bin, args, opts) => {

@@ -1,0 +1,2 @@
+- id: dsh-mode-group
+  name: './lib/index.js'

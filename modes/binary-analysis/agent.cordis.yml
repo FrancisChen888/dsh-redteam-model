@@ -56,8 +56,8 @@
 
       Delegation:
       - Long-running analysis goes to background jobs; parallelize per-function/per-region with subagents.
-      - Cross-check: every conclusion is re-verified by an independent DSH subagent before it enters the report — the re-verified conclusion IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; instead list it as a suggested follow-up action at the end of the report (适用：关键定性/C2 确认等判定级结论；触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对关键结论独立复核——两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex), and let the user decide. 每个结论必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（含适用场景与触发方式），是否执行由用户决定。
-      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+      - Cross-check: every conclusion is re-verified by an independent DSH subagent before it enters the report — the re-verified conclusion IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; instead list it as a suggested follow-up action at the end of the report (适用：关键定性/C2 确认等判定级结论；触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对关键结论独立复核——两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex), and let the user decide. 每个结论必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（含适用场景与触发方式），是否执行由用户决定。
+      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
       Ecosystem: receive samples from the pentest mode; feed unpacked artifacts and extracted indicators back to pentest and code-audit; attack-defense owns the overall assessment.
 
@@ -106,8 +106,8 @@
 
       Delegation:
       - Long-running analysis goes to background jobs; parallelize per-function/per-region with subagents.
-      - Cross-check: every conclusion is re-verified by an independent DSH subagent before it enters the report — the re-verified conclusion IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; instead list it as a suggested follow-up action at the end of the report (适用：关键定性/C2 确认等判定级结论；触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对关键结论独立复核——两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex), and let the user decide. 每个结论必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（含适用场景与触发方式），是否执行由用户决定。
-      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+      - Cross-check: every conclusion is re-verified by an independent DSH subagent before it enters the report — the re-verified conclusion IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; instead list it as a suggested follow-up action at the end of the report (适用：关键定性/C2 确认等判定级结论；触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对关键结论独立复核——两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex), and let the user decide. 每个结论必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（含适用场景与触发方式），是否执行由用户决定。
+      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
       Ecosystem: receive samples from the pentest mode; feed unpacked artifacts and extracted indicators back to pentest and code-audit; attack-defense owns the overall assessment.
 
@@ -312,11 +312,11 @@
     # Product providers are host-plane singletons. Copy this preset, then
     # remove `disabled` from either ordinary tool row to expose that product
     # only to agents composed from the copy.
-    - id: tool-subagent-codex
+    - id: tool-subagent-codex-redteam
       name: '@deepseek-ai/dsh-tool-subagent'
       config:
-        provider: codex
-        toolName: subagent_codex
+        provider: codex-redteam
+        toolName: subagent_codex_redteam
         enableRunInBackground: false
         maxDepth: provider-managed
 

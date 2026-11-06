@@ -27,7 +27,7 @@
  * links them) left bare package-name rows that revision 1 still counted as
  * current, so every such copy has to be replayed once.
  */
-export const NORMALIZER_VERSION = 2
+export const NORMALIZER_VERSION = 3
 
 export const ENGINE_PACKAGES = {
   ptc: { id: 'workflow-ptc', name: '@deepseek-ai/dsh-workflow-ptc' },
@@ -64,7 +64,7 @@ export interface RewriteResult {
 
 const ENGINE_ID_LINE = /^(\s*)- id: workflow-(ptc|worker-thread)\s*$/
 const NAME_LINE = /^(\s*)name: '([^']+)'\s*$/
-const EXTERNAL_NAME = /^@dsh-external\/([a-z0-9-]+)$/
+const EXTERNAL_NAME = /^(?:@dsh-external\/([a-z0-9-]+)|\.\/node_modules\/@dsh-external\/dsh-redteam-model\/plugins\/([a-z0-9-]+)\/lib\/index\.js)$/
 
 /** Rewrite one composition's text. Pure: same input, same output, no IO. */
 export function rewriteCompositionText(text: string, decisions: RewriteDecisions): RewriteResult {
@@ -99,7 +99,7 @@ export function rewriteCompositionText(text: string, decisions: RewriteDecisions
     if (externalMatch === null) continue
     const external = EXTERNAL_NAME[Symbol.match](externalMatch[2] ?? '')
     if (external === null) continue
-    const dirName = external[1] ?? ''
+    const dirName = external[1] ?? external[2] ?? ''
     if (dirName === '') continue
     const url = entries[dirName]
     if (url === undefined) {

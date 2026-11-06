@@ -1,0 +1,10 @@
+- id: dsh-product-subagents
+  name: './lib/index.js'
+  config:
+    claudeCode:
+      bin: claude
+      timeoutMs: 600000
+    codex:
+      bin: codex
+      sandbox: workspace-write
+      timeoutMs: 600000

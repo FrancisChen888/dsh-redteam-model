@@ -13,7 +13,7 @@ import os from "node:os";
 import { openHunterStore, configView, getKey, nowIso } from "./store.js";
 import { buildQueries, searchFofaPage, searchHunterPage, searchQuakePage, mergeAssets, fofaGuard, LIMITS, daysAgoStamp, nowStamp } from "./adapters.js";
 import { parseFingerprint, fingerprintQuery, fingerprintLadder, searchWithRelax, verifyPipeline, SEARCH_BUDGET } from "./verify.js";
-import { openStore as openResultsStore, getFinding, updateFinding } from "@dsh-external/dsh-redteam-results/store";
+import { openStore as openResultsStore, getFinding, updateFinding } from "../../dsh-redteam-results/lib/store.js";
 
 const name = "dsh-hunter";
 const inject = ["webServer", "webRuntime"];

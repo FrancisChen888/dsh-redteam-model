@@ -1,0 +1,5 @@
+- id: dsh-route-boost
+  name: './lib/index.js'
+  config:
+    maxChars: 1200
+    includeRefs: true

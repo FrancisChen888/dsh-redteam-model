@@ -1,0 +1,8 @@
+- id: dsh-refusal-guard
+  name: './lib/index.js'
+  config:
+    maxChars: 700
+    excerptChars: 300
+    escalate: true
+    retry: true
+    auditLog: true

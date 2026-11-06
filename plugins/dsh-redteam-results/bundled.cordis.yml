@@ -1,0 +1,2 @@
+- id: dsh-redteam-results
+  name: './lib/index.js'

@@ -37,7 +37,7 @@ let atlasStoreCache;
 async function joinChainRefs(rows, mode) {
 	if (!Array.isArray(rows) || rows.length === 0) return;
 	try {
-		const mod = await import("@dsh-external/dsh-attack-atlas/store");
+		const mod = await import("../../dsh-attack-atlas/lib/store.js");
 		const dbPath = process.env.DSH_ATLAS_DB || path.join(os.homedir(), ".dsh", "attack-atlas", "atlas.db");
 		if (!atlasStoreCache || atlasStoreCache.dbPath !== dbPath) atlasStoreCache = mod.openStore(dbPath);
 		const refIdx = mod.chainRefIndex(atlasStoreCache, mode);

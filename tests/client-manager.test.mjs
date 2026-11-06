@@ -100,6 +100,7 @@ async function renderManager(initialSnapshot, status = STATUS) {
   const listeners = new Set()
   const setCalls = []
   const rpcCalls = []
+  const statusCalls = []
   const startCalls = []
 
   const ctx = {
@@ -115,6 +116,7 @@ async function renderManager(initialSnapshot, status = STATUS) {
             return { ok: true, value: { id: 'op-0001' } }
           }
           assert.equal(endpoint, 'status')
+          statusCalls.push(payload)
           return { ok: true, value: status }
         },
       },
@@ -181,6 +183,7 @@ async function renderManager(initialSnapshot, status = STATUS) {
   return {
     renderer,
     rpcCalls,
+    statusCalls,
     setCalls,
     startCalls,
     openPlugins,
@@ -195,164 +198,64 @@ async function renderManager(initialSnapshot, status = STATUS) {
   }
 }
 
-test('Manager fails open when an unavailable settings snapshot retains false', async () => {
-  const manager = await renderManager({
-    status: 'unavailable',
-    value: { ...DEFAULT_VISIBILITY, showAttackAtlas: false },
-    writable: false,
-    mode: 'host',
+test('health dashboard reports DSH version and separates integrity from runtime', async () => {
+  const manager = await renderManager({ status: 'unavailable', value: undefined, writable: false, mode: 'memory' }, {
+    ...STATUS, health: { hostVersion: '0.2.2-rc.1', bundleIntegrity: 'complete', runtimeHealth: 'healthy', details: [] },
   })
   try {
-    manager.openPlugins()
-    assert.deepEqual(
-      manager.renderer.root.findAllByProps({ role: 'switch' }).map(node => node.props['aria-label']),
-      [
-        'Attack Atlas: Show conversation tab',
-        'Attack Atlas: Enabled in current profile',
-      ],
-    )
-    const toggle = manager.renderer.root.findByProps({
-      role: 'switch',
-      'aria-label': 'Attack Atlas: Show conversation tab',
-    })
-    assert.equal(toggle.props.checked, true)
-    assert.equal(toggle.props.disabled, true)
-  } finally {
-    await manager.cleanup()
+    const text = JSON.stringify(manager.renderer.toJSON())
+    assert.match(text, /0\.2\.2-rc\.1/)
+    assert.match(text, /Checks passed/)
+    assert.match(text, /Bundle integrity/)
+    assert.match(text, /Runtime components/)
+    assert.match(text, /Model, credentials, external tools and API calls are not tested/)
+    const buttons = manager.renderer.root.findAllByType('button').flatMap(node => node.children.filter(child => typeof child === 'string'))
+    assert.ok(!buttons.some(label => /install|uninstall|update|repair/i.test(label)))
+  } finally { await manager.cleanup() }
+})
+
+test('manual refresh forces a fresh integrity check', async () => {
+  const manager = await renderManager({ status: 'unavailable', value: undefined, writable: false, mode: 'memory' })
+  try {
+    assert.equal(manager.statusCalls.at(-1).force, false)
+    const refresh = manager.renderer.root.findAllByType('button').find(node => node.children.includes('Refresh'))
+    assert.ok(refresh)
+    await act(async () => { refresh.props.onClick(); await Promise.resolve(); await Promise.resolve() })
+    assert.equal(manager.statusCalls.at(-1).force, true)
+  } finally { await manager.cleanup() }
+})
+
+test('unknown runtime does not produce a positive overall result', async () => {
+  const manager = await renderManager({ status: 'unavailable', value: undefined, writable: false, mode: 'memory' }, {
+    ...STATUS, health: { hostVersion: null, bundleIntegrity: 'complete', runtimeHealth: 'unknown', details: ['No runtime status'] },
+  })
+  try {
+    const text = JSON.stringify(manager.renderer.toJSON())
+    assert.match(text, /Unknown/)
+    assert.match(text, /No runtime status/)
+    assert.doesNotMatch(text, /Checks passed/)
+  } finally { await manager.cleanup() }
+})
+
+test('incomplete bundle or unhealthy runtime reports attention', async () => {
+  for (const health of [
+    { hostVersion: '0.2.2-rc.1', bundleIntegrity: 'incomplete', runtimeHealth: 'healthy', details: [] },
+    { hostVersion: '0.2.2-rc.1', bundleIntegrity: 'complete', runtimeHealth: 'unhealthy', details: [] },
+  ]) {
+    const manager = await renderManager({ status: 'unavailable', value: undefined, writable: false, mode: 'memory' }, { ...STATUS, health })
+    try {
+      const text = JSON.stringify(manager.renderer.toJSON())
+      assert.match(text, /Attention required/)
+      assert.doesNotMatch(text, /Checks passed/)
+    } finally { await manager.cleanup() }
   }
 })
 
-test('Manager reports a resolved settings write that did not persist', async () => {
-  const manager = await renderManager({
-    status: 'ready',
-    value: { ...DEFAULT_VISIBILITY },
-    writable: true,
-    mode: 'host',
-  })
+test('older hosts with no health payload remain unknown', async () => {
+  const manager = await renderManager({ status: 'unavailable', value: undefined, writable: false, mode: 'memory' })
   try {
-    manager.openPlugins()
-    const findToggle = () => manager.renderer.root.findByProps({
-      role: 'switch',
-      'aria-label': 'Attack Atlas: Show conversation tab',
-    })
-
-    await act(async () => {
-      findToggle().props.onChange({ target: { checked: false } })
-      await Promise.resolve()
-      await Promise.resolve()
-    })
-
-    assert.deepEqual(manager.setCalls, [{ field: 'showAttackAtlas', value: false }])
-    assert.equal(findToggle().props.checked, true)
-    const alert = manager.renderer.root.findByProps({ role: 'alert' })
-    const text = alert.findAllByType('span').flatMap(node => node.children).join(' ')
-    assert.match(text, /preference was not saved/i)
-    assert.equal(manager.rpcCalls.includes('operation/start'), false)
-  } finally {
-    await manager.cleanup()
-  }
-})
-
-const READY_SNAPSHOT = { status: 'ready', value: { ...DEFAULT_VISIBILITY }, writable: true, mode: 'host' }
-
-function modeFixture(linkState, id) {
-  return {
-    id,
-    name: id,
-    summary: `${id} fixture`,
-    linkState,
-    ...(linkState === 'missing' ? {} : { linkPath: `/home/.dsh/.agent-presets/${id}` }),
-    ready: linkState === 'ok',
-  }
-}
-
-test('Manager removes every deployed mode behind one confirmation', async () => {
-  const manager = await renderManager(READY_SNAPSHOT, {
-    ...STATUS,
-    summary: { ...STATUS.summary, modesTotal: 3, modesReady: 1 },
-    modes: [
-      modeFixture('ok', 'redteam'),
-      modeFixture('stale', 'pentest'),
-      modeFixture('missing', 'code-audit'),
-    ],
-  })
-  try {
-    manager.openModes()
-    const batchButton = (label) => {
-      const button = manager.renderer.root.findAllByType('button')
-        .find(node => String(node.children.join('')).startsWith(label))
-      assert.ok(button, `modes page must render the ${label} button`)
-      return button
-    }
-    // A live link and an owned stale copy both count; a foreign or absent entry does not.
-    assert.equal(batchButton('Uninstall all modes').children.join(''), 'Uninstall all modes (2)')
-    assert.equal(batchButton('Uninstall all modes').props.disabled, false)
-    assert.equal(batchButton('Deploy all modes').children.join(''), 'Deploy all modes (2)')
-    assert.equal(batchButton('Deploy all modes').props.disabled, false)
-
-    // Payload objects cross the vm realm, so compare the fields, not identity.
-    const started = () => manager.startCalls.map(call => `${call.kind}:${call.target}`)
-    await act(async () => {
-      batchButton('Deploy all modes').props.onClick()
-      await Promise.resolve()
-      await Promise.resolve()
-    })
-    assert.deepEqual(started(), ['deploy-modes:modes'])
-
-    act(() => batchButton('Uninstall all modes').props.onClick())
-    const dialog = manager.renderer.root.findByProps({ role: 'dialog' })
-    assert.equal(dialog.props['aria-label'], 'Uninstall modes')
-    assert.deepEqual(dialog.findAllByType('li').map(node => node.children.join('')), ['redteam', 'pentest'])
-    // The modal carries the mode-specific description exactly once.
-    const notes = dialog.findAllByType('p').map(node => node.children.join(''))
-    assert.equal(notes.length, 1)
-    assert.match(notes[0], /packaged source tree are untouched/)
-
-    const confirm = dialog.findAllByType('button').find(node => node.children.includes('Confirm'))
-    await act(async () => {
-      confirm.props.onClick()
-      await Promise.resolve()
-      await Promise.resolve()
-    })
-
-    assert.deepEqual(started(), ['deploy-modes:modes', 'remove-modes:modes'])
-    assert.equal(manager.renderer.root.findAllByProps({ role: 'dialog' }).length, 0)
-  } finally {
-    await manager.cleanup()
-  }
-})
-
-test('Mode batch buttons gate on their own counts', async () => {
-  const batchButton = (manager, label) => manager.renderer.root.findAllByType('button')
-    .find(node => String(node.children.join('')).startsWith(label))
-
-  const fullyDeployed = await renderManager(READY_SNAPSHOT, {
-    ...STATUS,
-    summary: { ...STATUS.summary, modesTotal: 1, modesReady: 1 },
-    modes: [modeFixture('ok', 'redteam')],
-  })
-  try {
-    fullyDeployed.openModes()
-    assert.equal(batchButton(fullyDeployed, 'Deploy all modes').children.join(''), 'Deploy all modes (0)')
-    assert.equal(batchButton(fullyDeployed, 'Deploy all modes').props.disabled, true)
-    assert.equal(batchButton(fullyDeployed, 'Uninstall all modes').props.disabled, false)
-    assert.deepEqual(fullyDeployed.startCalls, [])
-  } finally {
-    await fullyDeployed.cleanup()
-  }
-
-  const untouched = await renderManager(READY_SNAPSHOT, {
-    ...STATUS,
-    summary: { ...STATUS.summary, modesTotal: 1 },
-    modes: [modeFixture('missing', 'redteam')],
-  })
-  try {
-    untouched.openModes()
-    assert.equal(batchButton(untouched, 'Uninstall all modes').children.join(''), 'Uninstall all modes (0)')
-    assert.equal(batchButton(untouched, 'Uninstall all modes').props.disabled, true)
-    assert.equal(batchButton(untouched, 'Deploy all modes').props.disabled, false)
-    assert.deepEqual(untouched.startCalls, [])
-  } finally {
-    await untouched.cleanup()
-  }
+    const text = JSON.stringify(manager.renderer.toJSON())
+    assert.match(text, /Unknown/)
+    assert.doesNotMatch(text, /Checks passed/)
+  } finally { await manager.cleanup() }
 })

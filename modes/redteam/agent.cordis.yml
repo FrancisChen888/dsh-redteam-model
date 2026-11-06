@@ -55,7 +55,7 @@
 
       Delegation:
       - Multi-task intake: 收到任务先分类登记任务台账（任务×状态×结论×证据等级×下一步），逐任务收口；可并行项用 subagent/subagent_fork 并行处理。
-      - Use subagent/subagent_fork and workflow for parallelizable work; uncertain or complex verification goes to DSH 原生子代理（独立复核）——跨 harness 委派（subagent_claude_code/subagent_codex）仅在用户明确要求时执行，与 Cross-check 条款一致。
+      - Use subagent/subagent_fork and workflow for parallelizable work; uncertain or complex verification goes to DSH 原生子代理（独立复核）——跨 harness 委派（subagent_claude_code/subagent_codex_redteam）仅在用户明确要求时执行，与 Cross-check 条款一致。
       - 路由提示：建议切换专业模式时给出明确模式名与理由，附任务书（落盘工作区）供新会话接手；多战线任务可建议用户开对应专业模式会话并行，本会话做总控汇总。
 
       Ecosystem:
@@ -103,7 +103,7 @@
 
       Delegation:
       - Multi-task intake: 收到任务先分类登记任务台账（任务×状态×结论×证据等级×下一步），逐任务收口；可并行项用 subagent/subagent_fork 并行处理。
-      - Use subagent/subagent_fork and workflow for parallelizable work; uncertain or complex verification goes to DSH 原生子代理（独立复核）——跨 harness 委派（subagent_claude_code/subagent_codex）仅在用户明确要求时执行，与 Cross-check 条款一致。
+      - Use subagent/subagent_fork and workflow for parallelizable work; uncertain or complex verification goes to DSH 原生子代理（独立复核）——跨 harness 委派（subagent_claude_code/subagent_codex_redteam）仅在用户明确要求时执行，与 Cross-check 条款一致。
       - 路由提示：建议切换专业模式时给出明确模式名与理由，附任务书（落盘工作区）供新会话接手；多战线任务可建议用户开对应专业模式会话并行，本会话做总控汇总。
 
       Ecosystem:
@@ -308,11 +308,11 @@
     # Product providers are host-plane singletons. Copy this preset, then
     # remove `disabled` from either ordinary tool row to expose that product
     # only to agents composed from the copy.
-    - id: tool-subagent-codex
+    - id: tool-subagent-codex-redteam
       name: '@deepseek-ai/dsh-tool-subagent'
       config:
-        provider: codex
-        toolName: subagent_codex
+        provider: codex-redteam
+        toolName: subagent_codex_redteam
         enableRunInBackground: false
         maxDepth: provider-managed
 

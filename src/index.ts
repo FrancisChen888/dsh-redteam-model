@@ -17,15 +17,16 @@ import {
   effectiveConversationViewSettings,
   registerConversationViewSettings,
 } from './conversationViewSettings.ts'
-import { activeProfile, deployGlobalAgents, deployModes, dshHome, getStatus, healPresetPlanePlugins, installOne, profileWebDir, reconcileProfileBundles, repairMode, scanModes, scanPlugins, uninstallModes, uninstallOne } from './manager.ts'
+import { activeProfile, deployGlobalAgents, deployModes, dshHome, getStatus, healPresetPlanePlugins, hostRuntimeScope, installOne, isBundledCollection, linkPluginPeers, profileWebDir, reconcileProfileBundles, repairMode, scanModes, scanPlugins, uninstallModes, uninstallOne } from './manager.ts'
 import { detectEngineFlavor, isPackagedDesktopHost, normalizePresetComposition } from './manager.ts'
 import { ENGINE_PACKAGES, NORMALIZER_VERSION, rewriteCompositionText } from './normalize.ts'
 import { OperationQueue } from './operations.ts'
 import { registerModelRpc } from './rpc.ts'
 import type { HostConnectionHandle } from './types.ts'
 
+export { inspectHealth } from './health.ts'
 export { OperationQueue }
-export { activeProfile, deployGlobalAgents, deployModes, dshHome, getStatus, healPresetPlanePlugins, installOne, profileWebDir, reconcileProfileBundles, repairMode, scanModes, scanPlugins, uninstallModes, uninstallOne }
+export { activeProfile, deployGlobalAgents, deployModes, dshHome, getStatus, healPresetPlanePlugins, hostRuntimeScope, installOne, isBundledCollection, linkPluginPeers, profileWebDir, reconcileProfileBundles, repairMode, scanModes, scanPlugins, uninstallModes, uninstallOne }
 export { detectEngineFlavor, isPackagedDesktopHost, normalizePresetComposition }
 export { ENGINE_PACKAGES, NORMALIZER_VERSION, rewriteCompositionText }
 export { registerModelRpc }
@@ -63,6 +64,9 @@ export interface HostContext {
 }
 
 export function apply(ctx: HostContext): void {
+  // Make the packaged child modules resolve to the active host's libraries.
+  // Do this before their include rows start and without invoking a package manager.
+  if (hostRuntimeScope() !== undefined) linkPluginPeers()
   registerConversationViewSettings(ctx)
 
   // dsh 0.2 dropped webRuntime; six web plugins still inject it for trustedHosts.
@@ -89,22 +93,26 @@ export function apply(ctx: HostContext): void {
   // plugin, which would otherwise report "broken — repair" on this boot and
   // every boot after it. Never fatal: an unreadable profile must not keep the
   // host from booting.
-  try {
-    healPresetPlanePlugins()
-  } catch {
-    /* getStatus reports the profile state to the settings page instead. */
-  }
-  try {
-    reconcileProfileBundles()
-  } catch {
-    /* getStatus reports the profile state to the settings page instead. */
+  if (!isBundledCollection()) {
+    try {
+      healPresetPlanePlugins()
+      reconcileProfileBundles()
+    } catch {
+      /* getStatus reports the legacy profile state instead. */
+    }
   }
 
   const queue = new OperationQueue(path.join(profileWebDir(), '.dsh-redteam-model-operations.json'))
 
-  ctx.inject(['connection'], (web: Record<string, unknown>) => {
+  ctx.inject(['connection', 'agentPresets'], (web: Record<string, unknown>) => {
     const { connection } = web as { connection: HostConnectionHandle }
-    registerModelRpc(connection, queue)
+    registerModelRpc(connection, queue, {
+      loader: (ctx as unknown as { loader?: unknown }).loader,
+      agentPresets: web.agentPresets,
+      subagents: ctx.get?.('subagents'),
+      skills: ctx.get?.('skills'),
+      systemPrompt: ctx.get?.('systemPrompt'),
+    })
   })
 
   ctx.effect(() => () => {

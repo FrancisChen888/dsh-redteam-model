@@ -1,0 +1,2 @@
+- id: stage-gate
+  name: './lib/index.js'

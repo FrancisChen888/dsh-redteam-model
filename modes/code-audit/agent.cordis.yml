@@ -58,8 +58,8 @@
 
       Delegation:
       - Use subagent/subagent_fork and workflow to fan out per-module, per-language audits, then merge and deduplicate findings.
-      - Cross-check: every finding is re-verified by an independent DSH subagent before it enters the report — both must agree on the call chain; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个 finding 必须经 DSH 独立子代理交叉复核（一致才进报告），复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对关键 finding 独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+      - Cross-check: every finding is re-verified by an independent DSH subagent before it enters the report — both must agree on the call chain; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个 finding 必须经 DSH 独立子代理交叉复核（一致才进报告），复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对关键 finding 独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
       Ecosystem: black-box findings from the pentest mode take priority as audit entry points — trace them back to code paths; overall assessment belongs to attack-defense.
 
@@ -110,8 +110,8 @@
 
       Delegation:
       - Use subagent/subagent_fork and workflow to fan out per-module, per-language audits, then merge and deduplicate findings.
-      - Cross-check: every finding is re-verified by an independent DSH subagent before it enters the report — both must agree on the call chain; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个 finding 必须经 DSH 独立子代理交叉复核（一致才进报告），复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对关键 finding 独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+      - Cross-check: every finding is re-verified by an independent DSH subagent before it enters the report — both must agree on the call chain; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个 finding 必须经 DSH 独立子代理交叉复核（一致才进报告），复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对关键 finding 独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
       Ecosystem: black-box findings from the pentest mode take priority as audit entry points — trace them back to code paths; overall assessment belongs to attack-defense.
 
@@ -316,11 +316,11 @@
     # Product providers are host-plane singletons. Copy this preset, then
     # remove `disabled` from either ordinary tool row to expose that product
     # only to agents composed from the copy.
-    - id: tool-subagent-codex
+    - id: tool-subagent-codex-redteam
       name: '@deepseek-ai/dsh-tool-subagent'
       config:
-        provider: codex
-        toolName: subagent_codex
+        provider: codex-redteam
+        toolName: subagent_codex_redteam
         enableRunInBackground: false
         maxDepth: provider-managed
 
@@ -368,4 +368,4 @@
 # semgrep 封装（preset 平面：code-audit 可见；预设离线三层规则集自动定位+证据落盘+
 # 命中对账双写 md/csv 内置；仅用检测到的本机 semgrep，缺装走三级兜底提示，绝不自动安装)
 - id: tool-semgrep
-  name: '@dsh-external/dsh-semgrep-audit'
+  name: './node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-semgrep-audit/lib/index.js'

@@ -5,6 +5,7 @@
  * endpoint validates its payload against the known mode/plugin allowlists.
  */
 
+import { inspectHealth } from './health.ts'
 import {
   deployGlobalAgents,
   deployModes,
@@ -173,11 +174,12 @@ function handleStart(payload: Record<string, unknown>, queue: OperationQueue): R
   return ok({ id: firstId })
 }
 
-function handleEndpoint(endpoint: string, rawPayload: unknown, queue: OperationQueue): RpcResult {
+async function handleEndpoint(endpoint: string, rawPayload: unknown, queue: OperationQueue, ctx?: unknown): Promise<RpcResult> {
   if (!ENDPOINTS.has(endpoint)) throw new Error(`unknown endpoint: ${endpoint}`)
 
   if (endpoint === 'status') {
-    return ok(getStatus(queue.list()))
+    const payload = rawPayload == null ? {} : asObject(rawPayload)
+    return ok({ ...getStatus(queue.list()), health: await inspectHealth(ctx, undefined, payload.force === true) })
   }
 
   if (endpoint === 'operations/clear') {
@@ -200,16 +202,16 @@ function handleEndpoint(endpoint: string, rawPayload: unknown, queue: OperationQ
 }
 
 /** Invoke the endpoint handler with the host rpcErrorSchema failure contract. */
-async function invokeEndpoint(endpoint: string, payload: unknown, queue: OperationQueue): Promise<RpcResult> {
+async function invokeEndpoint(endpoint: string, payload: unknown, queue: OperationQueue, ctx?: unknown): Promise<RpcResult> {
   try {
-    return handleEndpoint(endpoint, payload, queue)
+    return await handleEndpoint(endpoint, payload, queue, ctx)
   } catch (error) {
     return { ok: false, error: { code: 'internal' as const, message: error instanceof Error ? error.message : String(error), details: {} } }
   }
 }
 
 /** Wrap one endpoint handler as a Fetch-route handler speaking the host RPC envelope. */
-function fetchHandlerFor(endpoint: string, queue: OperationQueue) {
+function fetchHandlerFor(endpoint: string, queue: OperationQueue, ctx?: unknown) {
   return async (request: Request): Promise<Response> => {
     const respond = (rpcId: string, result: unknown): Response =>
       Response.json({ type: 'server-response', rpcId, result })
@@ -226,11 +228,11 @@ function fetchHandlerFor(endpoint: string, queue: OperationQueue) {
     if (body.type !== 'client-request' || body.method !== endpoint) {
       return respond(rpcId, { ok: false, error: { code: 'internal', message: 'invalid client-request envelope', details: {} } })
     }
-    return respond(rpcId, await invokeEndpoint(endpoint, body.payload, queue))
+    return respond(rpcId, await invokeEndpoint(endpoint, body.payload, queue, ctx))
   }
 }
 
-export function registerModelRpc(connection: HostConnectionHandle, queue: OperationQueue): void {
+export function registerModelRpc(connection: HostConnectionHandle, queue: OperationQueue, ctx?: unknown): void {
   // Modern Hosts (0.1.2+): exact Fetch routes under /api keep the channel alive.
   if (typeof connection.fetch?.register === 'function') {
     for (const endpoint of ENDPOINTS) {
@@ -238,7 +240,7 @@ export function registerModelRpc(connection: HostConnectionHandle, queue: Operat
         path: `${API_CHANNEL}/${endpoint}`,
         methods: ['POST'],
         requestBody: 'buffered',
-        fetch: fetchHandlerFor(endpoint, queue),
+        fetch: fetchHandlerFor(endpoint, queue, ctx),
       })
     }
   }
@@ -251,7 +253,7 @@ export function registerModelRpc(connection: HostConnectionHandle, queue: Operat
   // same inject callback, so guard it.
   try {
     connection.rpc.handle(RPC_CHANNEL, async (endpoint, rawPayload): Promise<RpcResult> => {
-      return invokeEndpoint(endpoint, rawPayload, queue)
+      return invokeEndpoint(endpoint, rawPayload, queue, ctx)
     }, { authority: 'loopback' })
   } catch {
     // Modern Host: the Fetch routes above are the transport.

@@ -1,0 +1,2 @@
+- id: dsh-webshell-mgr
+  name: './lib/index.js'

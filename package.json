@@ -1,7 +1,7 @@
 {
   "name": "@dsh-external/dsh-redteam-model",
-  "version": "1.1.2",
-  "description": "DSH redteam security research modes and runtime plugins, managed from one settings page: deploy the nine presets, install, update and uninstall the seventeen runtime plugins for the current profile.",
+  "version": "1.2.0",
+  "description": "DSH security research presets with bundled runtime plugins and a health dashboard.",
   "type": "module",
   "main": "./lib/index.js",
   "exports": {
@@ -50,6 +50,9 @@
         "@deepseek-ai/dsh-client-locale",
         "@deepseek-ai/dsh-client-ui-settings"
       ]
+    },
+    "redteam": {
+      "bundled": true
     }
   },
   "publishConfig": {
@@ -58,8 +61,9 @@
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
     "@deepseek-ai/cosmokit": "^1.8.4",
-    "@deepseek-ai/dsh-mcp-client": "^0.1.0-rc.6 || ^0.2.0-rc.0 || ^0.2.1-rc.0",
-    "@deepseek-ai/dsh-settings": "^0.1.0-rc.6 || ^0.1.1-rc.0 || ^0.2.0-rc.0 || ^0.2.1-rc.0",
+    "@deepseek-ai/dsh-mcp-client": "^0.1.0-rc.6 || ^0.2.0-rc.0 || ^0.2.1-rc.0 || ^0.2.2-rc.0",
+    "@deepseek-ai/dsh-settings": "^0.1.0-rc.6 || ^0.1.1-rc.0 || ^0.2.0-rc.0 || ^0.2.1-rc.0 || ^0.2.2-rc.0",
+    "@deepseek-ai/dsh-system-prompt": "^0.1.1-rc.0 || ^0.2.0-rc.0 || ^0.2.1-rc.0 || ^0.2.2-rc.0",
     "@deepseek-ai/schemastery": "^3.18.0"
   },
   "scripts": {

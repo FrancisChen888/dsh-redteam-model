@@ -756,14 +756,14 @@ export function intentSummary(st) {
 async function defaultResolvers() {
 	const out = {};
 	try {
-		const { openStore: openResults } = await import("@dsh-external/dsh-redteam-results/store");
+		const { openStore: openResults } = await import("../../dsh-redteam-results/lib/store.js");
 		const results = openResults(path.join(process.env.HOME || "", ".dsh", "redteam-results", "results.db"));
 		out.findingExists = (sessionId, id) => {
 			try { return Boolean(results.getFinding(sessionId, id)); } catch { return false; }
 		};
 	} catch { /* 成果库不可达：finding 锚走格式校验降级 */ }
 	try {
-		const { openStore: openAtlas, listChain } = await import("@dsh-external/dsh-attack-atlas/store");
+		const { openStore: openAtlas, listChain } = await import("../../dsh-attack-atlas/lib/store.js");
 		const atlas = openAtlas(path.join(process.env.HOME || "", ".dsh", "attack-atlas", "atlas.db"));
 		out.chainExists = (sessionId, mode, id) => {
 			try { return listChain(atlas, sessionId, mode).nodes.some((n) => n.id === id); } catch { return false; }

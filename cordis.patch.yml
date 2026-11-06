@@ -10,6 +10,81 @@
 - insert:
     - id: dsh-redteam-model
       name: '@dsh-external/dsh-redteam-model'
+    - id: bundled-dsh-attack-atlas
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-attack-atlas'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-attack-atlas/bundled.cordis.yml
+    - id: bundled-dsh-auto-advance
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-auto-advance'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-auto-advance/bundled.cordis.yml
+    - id: bundled-dsh-campaign-memory
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-campaign-memory'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-campaign-memory/bundled.cordis.yml
+    - id: bundled-dsh-hunter
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-hunter'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-hunter/bundled.cordis.yml
+    - id: bundled-dsh-mcp-studio
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-mcp-studio'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-mcp-studio/bundled.cordis.yml
+    - id: bundled-dsh-mode-group
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-mode-group'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-mode-group/bundled.cordis.yml
+    - id: bundled-dsh-product-subagents
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-product-subagents'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-product-subagents/bundled.cordis.yml
+    - id: bundled-dsh-redteam-results
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-redteam-results'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-redteam-results/bundled.cordis.yml
+    - id: bundled-dsh-refusal-guard
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-refusal-guard'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-refusal-guard/bundled.cordis.yml
+    - id: bundled-dsh-route-boost
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-route-boost'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-route-boost/bundled.cordis.yml
+    - id: bundled-dsh-sec-enforce
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-sec-enforce'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-sec-enforce/bundled.cordis.yml
+    - id: bundled-dsh-session-pulse
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-session-pulse'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-session-pulse/bundled.cordis.yml
+    - id: bundled-dsh-stage-gate
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-stage-gate'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-stage-gate/bundled.cordis.yml
+    - id: bundled-dsh-trace-vault
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-trace-vault'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-trace-vault/bundled.cordis.yml
+    - id: bundled-dsh-webshell-mgr
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-webshell-mgr'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-webshell-mgr/bundled.cordis.yml
 - insert:
     - id: preset-redteam
       name: '@deepseek-ai/dsh-agent-preset'
@@ -76,7 +151,7 @@
 
                   Delegation:
                   - Multi-task intake: 收到任务先分类登记任务台账（任务×状态×结论×证据等级×下一步），逐任务收口；可并行项用 subagent/subagent_fork 并行处理。
-                  - Use subagent/subagent_fork and workflow for parallelizable work; uncertain or complex verification goes to DSH 原生子代理（独立复核）——跨 harness 委派（subagent_claude_code/subagent_codex）仅在用户明确要求时执行，与 Cross-check 条款一致。
+                  - Use subagent/subagent_fork and workflow for parallelizable work; uncertain or complex verification goes to DSH 原生子代理（独立复核）——跨 harness 委派（subagent_claude_code/subagent_codex_redteam）仅在用户明确要求时执行，与 Cross-check 条款一致。
                   - 路由提示：建议切换专业模式时给出明确模式名与理由，附任务书（落盘工作区）供新会话接手；多战线任务可建议用户开对应专业模式会话并行，本会话做总控汇总。
 
                   Ecosystem:
@@ -124,7 +199,7 @@
 
                   Delegation:
                   - Multi-task intake: 收到任务先分类登记任务台账（任务×状态×结论×证据等级×下一步），逐任务收口；可并行项用 subagent/subagent_fork 并行处理。
-                  - Use subagent/subagent_fork and workflow for parallelizable work; uncertain or complex verification goes to DSH 原生子代理（独立复核）——跨 harness 委派（subagent_claude_code/subagent_codex）仅在用户明确要求时执行，与 Cross-check 条款一致。
+                  - Use subagent/subagent_fork and workflow for parallelizable work; uncertain or complex verification goes to DSH 原生子代理（独立复核）——跨 harness 委派（subagent_claude_code/subagent_codex_redteam）仅在用户明确要求时执行，与 Cross-check 条款一致。
                   - 路由提示：建议切换专业模式时给出明确模式名与理由，附任务书（落盘工作区）供新会话接手；多战线任务可建议用户开对应专业模式会话并行，本会话做总控汇总。
 
                   Ecosystem:
@@ -199,17 +274,17 @@
               name: '@deepseek-ai/dsh-skill-filesystem'
               config:
                 customSkillDirs:
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../pentest/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../code-audit/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../binary-analysis/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../attack-defense/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../av-evasion/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../incident-response/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../cloud-security/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../ctf-solver/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../asset-mapping/skills/', baseUrl))"
-                  - !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const u = process.getBuiltinModule('node:url'); const d = f.realpathSync(u.fileURLToPath(new URL('.', baseUrl))); return u.fileURLToPath(new URL('../../shared/skills/', u.pathToFileURL(d + '/'))); } catch { return '' } })()"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/redteam/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/pentest/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/code-audit/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/binary-analysis/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/attack-defense/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/av-evasion/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/incident-response/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/cloud-security/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/ctf-solver/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/asset-mapping/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/shared/skills/', baseUrl))"
 
             - id: tool-skill
               name: '@deepseek-ai/dsh-tool-skill'
@@ -329,11 +404,11 @@
                 # Product providers are host-plane singletons. Copy this preset, then
                 # remove `disabled` from either ordinary tool row to expose that product
                 # only to agents composed from the copy.
-                - id: tool-subagent-codex
+                - id: tool-subagent-codex-redteam
                   name: '@deepseek-ai/dsh-tool-subagent'
                   config:
-                    provider: codex
-                    toolName: subagent_codex
+                    provider: codex-redteam
+                    toolName: subagent_codex_redteam
                     enableRunInBackground: false
                     maxDepth: provider-managed
 
@@ -450,8 +525,8 @@
 
                   Delegation:
                   - Use subagent/subagent_fork and workflow for parallelizable work (per-host recon, per-service checks).
-                  - Cross-check: every finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个 finding 必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对关键/高危 finding 独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - Cross-check: every finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个 finding 必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对关键/高危 finding 独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem:
                   - White-box findings from the code-audit mode take priority as black-box test points; hand captured samples to the binary-analysis mode; the attack-defense mode owns the overall assessment.
@@ -511,8 +586,8 @@
 
                   Delegation:
                   - Use subagent/subagent_fork and workflow for parallelizable work (per-host recon, per-service checks).
-                  - Cross-check: every finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个 finding 必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对关键/高危 finding 独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - Cross-check: every finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个 finding 必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对关键/高危 finding 独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem:
                   - White-box findings from the code-audit mode take priority as black-box test points; hand captured samples to the binary-analysis mode; the attack-defense mode owns the overall assessment.
@@ -593,17 +668,17 @@
               name: '@deepseek-ai/dsh-skill-filesystem'
               config:
                 customSkillDirs:
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../redteam/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../code-audit/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../binary-analysis/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../attack-defense/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../av-evasion/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../incident-response/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../cloud-security/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../ctf-solver/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../asset-mapping/skills/', baseUrl))"
-                  - !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const u = process.getBuiltinModule('node:url'); const d = f.realpathSync(u.fileURLToPath(new URL('.', baseUrl))); return u.fileURLToPath(new URL('../../shared/skills/', u.pathToFileURL(d + '/'))); } catch { return '' } })()"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/pentest/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/redteam/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/code-audit/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/binary-analysis/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/attack-defense/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/av-evasion/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/incident-response/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/cloud-security/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/ctf-solver/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/asset-mapping/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/shared/skills/', baseUrl))"
 
             - id: tool-skill
               name: '@deepseek-ai/dsh-tool-skill'
@@ -723,11 +798,11 @@
                 # Product providers are host-plane singletons. Copy this preset, then
                 # remove `disabled` from either ordinary tool row to expose that product
                 # only to agents composed from the copy.
-                - id: tool-subagent-codex
+                - id: tool-subagent-codex-redteam
                   name: '@deepseek-ai/dsh-tool-subagent'
                   config:
-                    provider: codex
-                    toolName: subagent_codex
+                    provider: codex-redteam
+                    toolName: subagent_codex_redteam
                     enableRunInBackground: false
                     maxDepth: provider-managed
 
@@ -775,7 +850,7 @@
             # 扫描器封装（preset 平面：pentest / attack-defense / cloud-security / ctf-solver / asset-mapping 五预设可见；速率纪律/防盲打/证据落盘内置；
             # 仅用检测到的本机工具，缺装走三级兜底提示，绝不自动安装)
             - id: tool-scanner
-              name: '@dsh-external/dsh-scanner-tools'
+              name: './node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-scanner-tools/lib/index.js'
 - insert:
     - id: preset-code-audit
       name: '@deepseek-ai/dsh-agent-preset'
@@ -845,8 +920,8 @@
 
                   Delegation:
                   - Use subagent/subagent_fork and workflow to fan out per-module, per-language audits, then merge and deduplicate findings.
-                  - Cross-check: every finding is re-verified by an independent DSH subagent before it enters the report — both must agree on the call chain; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个 finding 必须经 DSH 独立子代理交叉复核（一致才进报告），复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对关键 finding 独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - Cross-check: every finding is re-verified by an independent DSH subagent before it enters the report — both must agree on the call chain; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个 finding 必须经 DSH 独立子代理交叉复核（一致才进报告），复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对关键 finding 独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem: black-box findings from the pentest mode take priority as audit entry points — trace them back to code paths; overall assessment belongs to attack-defense.
 
@@ -897,8 +972,8 @@
 
                   Delegation:
                   - Use subagent/subagent_fork and workflow to fan out per-module, per-language audits, then merge and deduplicate findings.
-                  - Cross-check: every finding is re-verified by an independent DSH subagent before it enters the report — both must agree on the call chain; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个 finding 必须经 DSH 独立子代理交叉复核（一致才进报告），复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对关键 finding 独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - Cross-check: every finding is re-verified by an independent DSH subagent before it enters the report — both must agree on the call chain; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个 finding 必须经 DSH 独立子代理交叉复核（一致才进报告），复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对关键 finding 独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem: black-box findings from the pentest mode take priority as audit entry points — trace them back to code paths; overall assessment belongs to attack-defense.
 
@@ -973,17 +1048,17 @@
               name: '@deepseek-ai/dsh-skill-filesystem'
               config:
                 customSkillDirs:
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../pentest/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../redteam/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../binary-analysis/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../attack-defense/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../av-evasion/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../incident-response/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../cloud-security/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../ctf-solver/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../asset-mapping/skills/', baseUrl))"
-                  - !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const u = process.getBuiltinModule('node:url'); const d = f.realpathSync(u.fileURLToPath(new URL('.', baseUrl))); return u.fileURLToPath(new URL('../../shared/skills/', u.pathToFileURL(d + '/'))); } catch { return '' } })()"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/code-audit/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/pentest/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/redteam/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/binary-analysis/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/attack-defense/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/av-evasion/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/incident-response/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/cloud-security/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/ctf-solver/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/asset-mapping/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/shared/skills/', baseUrl))"
 
             - id: tool-skill
               name: '@deepseek-ai/dsh-tool-skill'
@@ -1103,11 +1178,11 @@
                 # Product providers are host-plane singletons. Copy this preset, then
                 # remove `disabled` from either ordinary tool row to expose that product
                 # only to agents composed from the copy.
-                - id: tool-subagent-codex
+                - id: tool-subagent-codex-redteam
                   name: '@deepseek-ai/dsh-tool-subagent'
                   config:
-                    provider: codex
-                    toolName: subagent_codex
+                    provider: codex-redteam
+                    toolName: subagent_codex_redteam
                     enableRunInBackground: false
                     maxDepth: provider-managed
 
@@ -1155,7 +1230,7 @@
             # semgrep 封装（preset 平面：code-audit 可见；预设离线三层规则集自动定位+证据落盘+
             # 命中对账双写 md/csv 内置；仅用检测到的本机 semgrep，缺装走三级兜底提示，绝不自动安装)
             - id: tool-semgrep
-              name: '@dsh-external/dsh-semgrep-audit'
+              name: './node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-semgrep-audit/lib/index.js'
 - insert:
     - id: preset-binary-analysis
       name: '@deepseek-ai/dsh-agent-preset'
@@ -1223,8 +1298,8 @@
 
                   Delegation:
                   - Long-running analysis goes to background jobs; parallelize per-function/per-region with subagents.
-                  - Cross-check: every conclusion is re-verified by an independent DSH subagent before it enters the report — the re-verified conclusion IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; instead list it as a suggested follow-up action at the end of the report (适用：关键定性/C2 确认等判定级结论；触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对关键结论独立复核——两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex), and let the user decide. 每个结论必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（含适用场景与触发方式），是否执行由用户决定。
-                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - Cross-check: every conclusion is re-verified by an independent DSH subagent before it enters the report — the re-verified conclusion IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; instead list it as a suggested follow-up action at the end of the report (适用：关键定性/C2 确认等判定级结论；触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对关键结论独立复核——两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex), and let the user decide. 每个结论必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（含适用场景与触发方式），是否执行由用户决定。
+                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem: receive samples from the pentest mode; feed unpacked artifacts and extracted indicators back to pentest and code-audit; attack-defense owns the overall assessment.
 
@@ -1273,8 +1348,8 @@
 
                   Delegation:
                   - Long-running analysis goes to background jobs; parallelize per-function/per-region with subagents.
-                  - Cross-check: every conclusion is re-verified by an independent DSH subagent before it enters the report — the re-verified conclusion IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; instead list it as a suggested follow-up action at the end of the report (适用：关键定性/C2 确认等判定级结论；触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对关键结论独立复核——两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex), and let the user decide. 每个结论必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（含适用场景与触发方式），是否执行由用户决定。
-                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - Cross-check: every conclusion is re-verified by an independent DSH subagent before it enters the report — the re-verified conclusion IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; instead list it as a suggested follow-up action at the end of the report (适用：关键定性/C2 确认等判定级结论；触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对关键结论独立复核——两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex), and let the user decide. 每个结论必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（含适用场景与触发方式），是否执行由用户决定。
+                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem: receive samples from the pentest mode; feed unpacked artifacts and extracted indicators back to pentest and code-audit; attack-defense owns the overall assessment.
 
@@ -1349,17 +1424,17 @@
               name: '@deepseek-ai/dsh-skill-filesystem'
               config:
                 customSkillDirs:
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../pentest/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../code-audit/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../redteam/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../attack-defense/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../av-evasion/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../incident-response/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../cloud-security/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../ctf-solver/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../asset-mapping/skills/', baseUrl))"
-                  - !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const u = process.getBuiltinModule('node:url'); const d = f.realpathSync(u.fileURLToPath(new URL('.', baseUrl))); return u.fileURLToPath(new URL('../../shared/skills/', u.pathToFileURL(d + '/'))); } catch { return '' } })()"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/binary-analysis/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/pentest/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/code-audit/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/redteam/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/attack-defense/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/av-evasion/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/incident-response/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/cloud-security/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/ctf-solver/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/asset-mapping/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/shared/skills/', baseUrl))"
 
             - id: tool-skill
               name: '@deepseek-ai/dsh-tool-skill'
@@ -1479,11 +1554,11 @@
                 # Product providers are host-plane singletons. Copy this preset, then
                 # remove `disabled` from either ordinary tool row to expose that product
                 # only to agents composed from the copy.
-                - id: tool-subagent-codex
+                - id: tool-subagent-codex-redteam
                   name: '@deepseek-ai/dsh-tool-subagent'
                   config:
-                    provider: codex
-                    toolName: subagent_codex
+                    provider: codex-redteam
+                    toolName: subagent_codex_redteam
                     enableRunInBackground: false
                     maxDepth: provider-managed
 
@@ -1596,8 +1671,8 @@
                   Delegation:
                   - Use workflow to fan out parallel work; assign subagents per phase (recon, exploitation verification, lateral, report) and merge their evidence. Role definitions, stage gates, and dispatch templates live in the ad-playbook 子代理编排 chapter.
                   - Stage gates: advance a stage only after its artifact passes the independent reviewer's gate-check (independent-review skill); the next stage's workers must read the stage artifact from disk first and abort on missing fields. 阶段推进以复核员 gate-pass 为准；下一阶段工人先读落盘产物，缺字段即中止。
-                  - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对计分项独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对计分项独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem: consume findings from pentest / code-audit / binary-analysis modes; own the overall assessment, MITRE ATT&CK mapping, and scoring; scope may include the target organization's AI/agentized attack surface and its LLM applications (prompt injection, jailbreaks, agent tool misuse — tool matrix in the ad-playbook).
 
@@ -1645,8 +1720,8 @@
                   Delegation:
                   - Use workflow to fan out parallel work; assign subagents per phase (recon, exploitation verification, lateral, report) and merge their evidence. Role definitions, stage gates, and dispatch templates live in the ad-playbook 子代理编排 chapter.
                   - Stage gates: advance a stage only after its artifact passes the independent reviewer's gate-check (independent-review skill); the next stage's workers must read the stage artifact from disk first and abort on missing fields. 阶段推进以复核员 gate-pass 为准；下一阶段工人先读落盘产物，缺字段即中止。
-                  - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对计分项独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对计分项独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem: consume findings from pentest / code-audit / binary-analysis modes; own the overall assessment, MITRE ATT&CK mapping, and scoring; scope may include the target organization's AI/agentized attack surface and its LLM applications (prompt injection, jailbreaks, agent tool misuse — tool matrix in the ad-playbook).
 
@@ -1719,17 +1794,17 @@
               name: '@deepseek-ai/dsh-skill-filesystem'
               config:
                 customSkillDirs:
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../pentest/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../code-audit/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../binary-analysis/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../redteam/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../av-evasion/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../incident-response/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../cloud-security/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../ctf-solver/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../asset-mapping/skills/', baseUrl))"
-                  - !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const u = process.getBuiltinModule('node:url'); const d = f.realpathSync(u.fileURLToPath(new URL('.', baseUrl))); return u.fileURLToPath(new URL('../../shared/skills/', u.pathToFileURL(d + '/'))); } catch { return '' } })()"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/attack-defense/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/pentest/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/code-audit/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/binary-analysis/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/redteam/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/av-evasion/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/incident-response/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/cloud-security/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/ctf-solver/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/asset-mapping/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/shared/skills/', baseUrl))"
 
             - id: tool-skill
               name: '@deepseek-ai/dsh-tool-skill'
@@ -1849,11 +1924,11 @@
                 # Product providers are host-plane singletons. Copy this preset, then
                 # remove `disabled` from either ordinary tool row to expose that product
                 # only to agents composed from the copy.
-                - id: tool-subagent-codex
+                - id: tool-subagent-codex-redteam
                   name: '@deepseek-ai/dsh-tool-subagent'
                   config:
-                    provider: codex
-                    toolName: subagent_codex
+                    provider: codex-redteam
+                    toolName: subagent_codex_redteam
                     enableRunInBackground: false
                     maxDepth: provider-managed
 
@@ -1901,7 +1976,7 @@
             # 扫描器封装（preset 平面：pentest / attack-defense / cloud-security / ctf-solver / asset-mapping 五预设可见；速率纪律/防盲打/证据落盘内置；
             # 仅用检测到的本机工具，缺装走三级兜底提示，绝不自动安装)
             - id: tool-scanner
-              name: '@dsh-external/dsh-scanner-tools'
+              name: './node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-scanner-tools/lib/index.js'
 - insert:
     - id: preset-av-evasion
       name: '@deepseek-ai/dsh-agent-preset'
@@ -1966,8 +2041,8 @@
                   - Product subagent: claude's conclusions require evidence too — never accept an evidence-free endorsement. 无 claude 用 codex；两者皆无则只用 DSH 原生子代理。
 
                   Delegation:
-                  - Parallelize build/test cycles per technique with subagents; cross-check every conclusion with an independent DSH subagent — the re-verified conclusion IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report (适用：判定级结论；触发：用户说复核时 spawn subagent_claude_code/subagent_codex 独立复核) and let the user decide. 每个结论经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对判定级结论独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-                  - When uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - Parallelize build/test cycles per technique with subagents; cross-check every conclusion with an independent DSH subagent — the re-verified conclusion IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report (适用：判定级结论；触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 独立复核) and let the user decide. 每个结论经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对判定级结论独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+                  - When uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem: consume detection rules from code-audit / binary-analysis outputs to test against; feed detection-side intelligence (detection surface, rules drafts) to the attack-defense mode.
 
@@ -2011,8 +2086,8 @@
                   - Product subagent: claude's conclusions require evidence too — never accept an evidence-free endorsement. 无 claude 用 codex；两者皆无则只用 DSH 原生子代理。
 
                   Delegation:
-                  - Parallelize build/test cycles per technique with subagents; cross-check every conclusion with an independent DSH subagent — the re-verified conclusion IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report (适用：判定级结论；触发：用户说复核时 spawn subagent_claude_code/subagent_codex 独立复核) and let the user decide. 每个结论经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对判定级结论独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-                  - When uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - Parallelize build/test cycles per technique with subagents; cross-check every conclusion with an independent DSH subagent — the re-verified conclusion IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report (适用：判定级结论；触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 独立复核) and let the user decide. 每个结论经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对判定级结论独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+                  - When uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem: consume detection rules from code-audit / binary-analysis outputs to test against; feed detection-side intelligence (detection surface, rules drafts) to the attack-defense mode.
 
@@ -2085,17 +2160,17 @@
               name: '@deepseek-ai/dsh-skill-filesystem'
               config:
                 customSkillDirs:
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../pentest/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../code-audit/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../binary-analysis/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../attack-defense/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../redteam/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../incident-response/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../cloud-security/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../ctf-solver/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../asset-mapping/skills/', baseUrl))"
-                  - !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const u = process.getBuiltinModule('node:url'); const d = f.realpathSync(u.fileURLToPath(new URL('.', baseUrl))); return u.fileURLToPath(new URL('../../shared/skills/', u.pathToFileURL(d + '/'))); } catch { return '' } })()"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/av-evasion/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/pentest/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/code-audit/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/binary-analysis/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/attack-defense/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/redteam/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/incident-response/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/cloud-security/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/ctf-solver/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/asset-mapping/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/shared/skills/', baseUrl))"
 
             - id: tool-skill
               name: '@deepseek-ai/dsh-tool-skill'
@@ -2215,11 +2290,11 @@
                 # Product providers are host-plane singletons. Copy this preset, then
                 # remove `disabled` from either ordinary tool row to expose that product
                 # only to agents composed from the copy.
-                - id: tool-subagent-codex
+                - id: tool-subagent-codex-redteam
                   name: '@deepseek-ai/dsh-tool-subagent'
                   config:
-                    provider: codex
-                    toolName: subagent_codex
+                    provider: codex-redteam
+                    toolName: subagent_codex_redteam
                     enableRunInBackground: false
                     maxDepth: provider-managed
 
@@ -2332,8 +2407,8 @@
                   Delegation:
                   - Use workflow to fan out parallel work; assign subagents per investigation line (Windows host forensics, Linux host forensics, log analysis, malware sample analysis, timeline reconstruction, independent review) and merge their evidence. Role definitions, stage gates, and dispatch templates live in the ir-playbook 子代理编排 chapter.
                   - Stage gates: advance a stage only after its artifact passes the independent reviewer's gate-check (independent-review skill); the next stage's workers must read the stage artifact from disk first and abort on missing fields. 阶段推进以复核员 gate-pass 为准；下一阶段工人先读落盘产物，缺字段即中止。
-                  - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对关键定性独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对关键定性独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem: consume findings and artifacts from pentest / code-audit / binary-analysis / attack-defense modes; own the investigation, the attack-chain reconstruction, and the attribution report; malware sample deep-analysis sub-tasks cooperate with binary-analysis per the ecosystem rules, and attack-side validation is handed to pentest / attack-defense.
 
@@ -2381,8 +2456,8 @@
                   Delegation:
                   - Use workflow to fan out parallel work; assign subagents per investigation line (Windows host forensics, Linux host forensics, log analysis, malware sample analysis, timeline reconstruction, independent review) and merge their evidence. Role definitions, stage gates, and dispatch templates live in the ir-playbook 子代理编排 chapter.
                   - Stage gates: advance a stage only after its artifact passes the independent reviewer's gate-check (independent-review skill); the next stage's workers must read the stage artifact from disk first and abort on missing fields. 阶段推进以复核员 gate-pass 为准；下一阶段工人先读落盘产物，缺字段即中止。
-                  - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对关键定性独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对关键定性独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem: consume findings and artifacts from pentest / code-audit / binary-analysis / attack-defense modes; own the investigation, the attack-chain reconstruction, and the attribution report; malware sample deep-analysis sub-tasks cooperate with binary-analysis per the ecosystem rules, and attack-side validation is handed to pentest / attack-defense.
 
@@ -2455,17 +2530,17 @@
               name: '@deepseek-ai/dsh-skill-filesystem'
               config:
                 customSkillDirs:
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../pentest/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../code-audit/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../binary-analysis/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../attack-defense/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../av-evasion/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../redteam/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../cloud-security/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../ctf-solver/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../asset-mapping/skills/', baseUrl))"
-                  - !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const u = process.getBuiltinModule('node:url'); const d = f.realpathSync(u.fileURLToPath(new URL('.', baseUrl))); return u.fileURLToPath(new URL('../../shared/skills/', u.pathToFileURL(d + '/'))); } catch { return '' } })()"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/incident-response/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/pentest/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/code-audit/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/binary-analysis/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/attack-defense/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/av-evasion/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/redteam/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/cloud-security/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/ctf-solver/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/asset-mapping/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/shared/skills/', baseUrl))"
 
             - id: tool-skill
               name: '@deepseek-ai/dsh-tool-skill'
@@ -2585,11 +2660,11 @@
                 # Product providers are host-plane singletons. Copy this preset, then
                 # remove `disabled` from either ordinary tool row to expose that product
                 # only to agents composed from the copy.
-                - id: tool-subagent-codex
+                - id: tool-subagent-codex-redteam
                   name: '@deepseek-ai/dsh-tool-subagent'
                   config:
-                    provider: codex
-                    toolName: subagent_codex
+                    provider: codex-redteam
+                    toolName: subagent_codex_redteam
                     enableRunInBackground: false
                     maxDepth: provider-managed
 
@@ -2704,8 +2779,8 @@
                   Delegation:
                   - Use workflow to fan out parallel work; assign subagents per investigation line (per-vendor cloud lines: AWS / Azure / GCP / 阿里云 / 腾讯云 / 华为云; cloud-native line: K8s / container / serverless; independent review) and merge their evidence. Role definitions, stage gates, and dispatch templates live in the cloud-playbook 子代理编排 chapter.
                   - Stage gates: advance a stage only after its artifact passes the independent reviewer's gate-check (independent-review skill); the next stage's workers must read the stage artifact from disk first and abort on missing fields. 阶段推进以复核员 gate-pass 为准；下一阶段工人先读落盘产物，缺字段即中止。
-                  - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对计分项独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对计分项独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem: consume findings from pentest / code-audit / binary-analysis modes; own the cloud attack-surface assessment, attack-path verification, privilege-chain closure, and the cloud security assessment report; web-application entry points cooperate with pentest, IaC and cloud-service source review cooperates with code-audit, and detection-side handoff goes to attack-defense / av-evasion per the ecosystem rules.
 
@@ -2755,8 +2830,8 @@
                   Delegation:
                   - Use workflow to fan out parallel work; assign subagents per investigation line (per-vendor cloud lines: AWS / Azure / GCP / 阿里云 / 腾讯云 / 华为云; cloud-native line: K8s / container / serverless; independent review) and merge their evidence. Role definitions, stage gates, and dispatch templates live in the cloud-playbook 子代理编排 chapter.
                   - Stage gates: advance a stage only after its artifact passes the independent reviewer's gate-check (independent-review skill); the next stage's workers must read the stage artifact from disk first and abort on missing fields. 阶段推进以复核员 gate-pass 为准；下一阶段工人先读落盘产物，缺字段即中止。
-                  - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对计分项独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对计分项独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem: consume findings from pentest / code-audit / binary-analysis modes; own the cloud attack-surface assessment, attack-path verification, privilege-chain closure, and the cloud security assessment report; web-application entry points cooperate with pentest, IaC and cloud-service source review cooperates with code-audit, and detection-side handoff goes to attack-defense / av-evasion per the ecosystem rules.
 
@@ -2829,17 +2904,17 @@
               name: '@deepseek-ai/dsh-skill-filesystem'
               config:
                 customSkillDirs:
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../pentest/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../code-audit/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../binary-analysis/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../attack-defense/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../av-evasion/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../redteam/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../incident-response/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../ctf-solver/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../asset-mapping/skills/', baseUrl))"
-                  - !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const u = process.getBuiltinModule('node:url'); const d = f.realpathSync(u.fileURLToPath(new URL('.', baseUrl))); return u.fileURLToPath(new URL('../../shared/skills/', u.pathToFileURL(d + '/'))); } catch { return '' } })()"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/cloud-security/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/pentest/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/code-audit/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/binary-analysis/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/attack-defense/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/av-evasion/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/redteam/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/incident-response/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/ctf-solver/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/asset-mapping/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/shared/skills/', baseUrl))"
 
             - id: tool-skill
               name: '@deepseek-ai/dsh-tool-skill'
@@ -2959,11 +3034,11 @@
                 # Product providers are host-plane singletons. Copy this preset, then
                 # remove `disabled` from either ordinary tool row to expose that product
                 # only to agents composed from the copy.
-                - id: tool-subagent-codex
+                - id: tool-subagent-codex-redteam
                   name: '@deepseek-ai/dsh-tool-subagent'
                   config:
-                    provider: codex
-                    toolName: subagent_codex
+                    provider: codex-redteam
+                    toolName: subagent_codex_redteam
                     enableRunInBackground: false
                     maxDepth: provider-managed
 
@@ -3011,7 +3086,7 @@
             # 扫描器封装（preset 平面：pentest / attack-defense / cloud-security / ctf-solver / asset-mapping 五预设可见；速率纪律/防盲打/证据落盘内置；
             # 仅用检测到的本机工具，缺装走三级兜底提示，绝不自动安装)
             - id: tool-scanner
-              name: '@dsh-external/dsh-scanner-tools'
+              name: './node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-scanner-tools/lib/index.js'
 - insert:
     - id: preset-ctf-solver
       name: '@deepseek-ai/dsh-agent-preset'
@@ -3076,7 +3151,7 @@
 
                   Delegation:
                   - Use workflow to fan out parallel work; assign one subagent per challenge line (or per module cluster) and merge their flags into the ledger. Module routing table and the escalation ladder live in the ctf-playbook.
-                  - Stuck-challenge escalation: when a challenge stalls, delegate to an additional DSH subagent with a fresh angle first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 卡题先追加 DSH 子代理换思路；跨 harness 委派仅在用户明确要求时执行。
+                  - Stuck-challenge escalation: when a challenge stalls, delegate to an additional DSH subagent with a fresh angle first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 卡题先追加 DSH 子代理换思路；跨 harness 委派仅在用户明确要求时执行。
                   - Critical-path review: before the report, an independent DSH subagent re-verifies each solved flag against its evidence (platform echo / check output); the re-verified ledger IS the deliverable. 报告前由 DSH 独立子代理逐题复核 flag 证据，复核后的台账即为最终输出。
 
                   Ecosystem: the CTF solver owns the solving orchestration and flag ledger; deep single-module techniques live in the module refs (ctf-solver/refs/ctf-*/SKILL.md, routed by the playbook module table); solved payloads / scripts / techniques can be handed to pentest / binary-analysis as knowledge inputs per the ecosystem rules.
@@ -3121,7 +3196,7 @@
 
                   Delegation:
                   - Use workflow to fan out parallel work; assign one subagent per challenge line (or per module cluster) and merge their flags into the ledger. Module routing table and the escalation ladder live in the ctf-playbook.
-                  - Stuck-challenge escalation: when a challenge stalls, delegate to an additional DSH subagent with a fresh angle first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 卡题先追加 DSH 子代理换思路；跨 harness 委派仅在用户明确要求时执行。
+                  - Stuck-challenge escalation: when a challenge stalls, delegate to an additional DSH subagent with a fresh angle first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 卡题先追加 DSH 子代理换思路；跨 harness 委派仅在用户明确要求时执行。
                   - Critical-path review: before the report, an independent DSH subagent re-verifies each solved flag against its evidence (platform echo / check output); the re-verified ledger IS the deliverable. 报告前由 DSH 独立子代理逐题复核 flag 证据，复核后的台账即为最终输出。
 
                   Ecosystem: the CTF solver owns the solving orchestration and flag ledger; deep single-module techniques live in the module refs (ctf-solver/refs/ctf-*/SKILL.md, routed by the playbook module table); solved payloads / scripts / techniques can be handed to pentest / binary-analysis as knowledge inputs per the ecosystem rules.
@@ -3195,17 +3270,17 @@
               name: '@deepseek-ai/dsh-skill-filesystem'
               config:
                 customSkillDirs:
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../pentest/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../code-audit/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../binary-analysis/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../attack-defense/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../av-evasion/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../redteam/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../incident-response/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../cloud-security/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../asset-mapping/skills/', baseUrl))"
-                  - !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const u = process.getBuiltinModule('node:url'); const d = f.realpathSync(u.fileURLToPath(new URL('.', baseUrl))); return u.fileURLToPath(new URL('../../shared/skills/', u.pathToFileURL(d + '/'))); } catch { return '' } })()"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/ctf-solver/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/pentest/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/code-audit/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/binary-analysis/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/attack-defense/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/av-evasion/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/redteam/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/incident-response/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/cloud-security/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/asset-mapping/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/shared/skills/', baseUrl))"
 
             - id: tool-skill
               name: '@deepseek-ai/dsh-tool-skill'
@@ -3325,11 +3400,11 @@
                 # Product providers are host-plane singletons. Copy this preset, then
                 # remove `disabled` from either ordinary tool row to expose that product
                 # only to agents composed from the copy.
-                - id: tool-subagent-codex
+                - id: tool-subagent-codex-redteam
                   name: '@deepseek-ai/dsh-tool-subagent'
                   config:
-                    provider: codex
-                    toolName: subagent_codex
+                    provider: codex-redteam
+                    toolName: subagent_codex_redteam
                     enableRunInBackground: false
                     maxDepth: provider-managed
 
@@ -3377,7 +3452,7 @@
             # 扫描器封装（preset 平面：pentest / attack-defense / cloud-security / ctf-solver / asset-mapping 五预设可见；速率纪律/防盲打/证据落盘内置；
             # 仅用检测到的本机工具，缺装走三级兜底提示，绝不自动安装)
             - id: tool-scanner
-              name: '@dsh-external/dsh-scanner-tools'
+              name: './node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-scanner-tools/lib/index.js'
 - insert:
     - id: preset-asset-mapping
       name: '@deepseek-ai/dsh-agent-preset'
@@ -3458,7 +3533,7 @@
                   Delegation:
                   - 管线主体走 asset-mapping-playbook 的脚本（断点续跑、配额自管）；subagent 用于三个半自动环节——爱企查 BFS 控股穿透（网页）、搜索引擎/小程序/APP 补充源、scope 人工核对关卡的草稿整理。
                   - Cross-harness review follows the ecosystem norm: not proactively invoked, listed as a suggested follow-up at the end of the report, user-triggered. 跨 harness 复核不主动调用，报告尾列建议项，用户触发制。
-                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem:
                   - 框架资产表（Excel 第 5 表）是 pentest / attack-defense 打点优先级的输入；单位汇总供攻防总控作战场底图；攻防模式的目标画像需求路由本模式做全量清册；本模式需要打点时把框架资产表交接给攻击类模式。
@@ -3527,7 +3602,7 @@
                   Delegation:
                   - 管线主体走 asset-mapping-playbook 的脚本（断点续跑、配额自管）；subagent 用于三个半自动环节——爱企查 BFS 控股穿透（网页）、搜索引擎/小程序/APP 补充源、scope 人工核对关卡的草稿整理。
                   - Cross-harness review follows the ecosystem norm: not proactively invoked, listed as a suggested follow-up at the end of the report, user-triggered. 跨 harness 复核不主动调用，报告尾列建议项，用户触发制。
-                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+                  - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
                   Ecosystem:
                   - 框架资产表（Excel 第 5 表）是 pentest / attack-defense 打点优先级的输入；单位汇总供攻防总控作战场底图；攻防模式的目标画像需求路由本模式做全量清册；本模式需要打点时把框架资产表交接给攻击类模式。
@@ -3609,17 +3684,17 @@
               name: '@deepseek-ai/dsh-skill-filesystem'
               config:
                 customSkillDirs:
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../redteam/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../pentest/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../code-audit/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../binary-analysis/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../attack-defense/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../av-evasion/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../incident-response/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../cloud-security/skills/', baseUrl))"
-                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('../ctf-solver/skills/', baseUrl))"
-                  - !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const u = process.getBuiltinModule('node:url'); const d = f.realpathSync(u.fileURLToPath(new URL('.', baseUrl))); return u.fileURLToPath(new URL('../../shared/skills/', u.pathToFileURL(d + '/'))); } catch { return '' } })()"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/asset-mapping/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/redteam/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/pentest/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/code-audit/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/binary-analysis/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/attack-defense/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/av-evasion/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/incident-response/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/cloud-security/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/modes/ctf-solver/skills/', baseUrl))"
+                  - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@dsh-external/dsh-redteam-model/shared/skills/', baseUrl))"
 
             - id: tool-skill
               name: '@deepseek-ai/dsh-tool-skill'
@@ -3739,11 +3814,11 @@
                 # Product providers are host-plane singletons. Copy this preset, then
                 # remove `disabled` from either ordinary tool row to expose that product
                 # only to agents composed from the copy.
-                - id: tool-subagent-codex
+                - id: tool-subagent-codex-redteam
                   name: '@deepseek-ai/dsh-tool-subagent'
                   config:
-                    provider: codex
-                    toolName: subagent_codex
+                    provider: codex-redteam
+                    toolName: subagent_codex_redteam
                     enableRunInBackground: false
                     maxDepth: provider-managed
 
@@ -3791,4 +3866,4 @@
             # 扫描器封装（preset 平面：pentest / attack-defense / cloud-security / ctf-solver / asset-mapping 五预设可见；速率纪律/防盲打/证据落盘内置；
             # 仅用检测到的本机工具，缺装走三级兜底提示，绝不自动安装)
             - id: tool-scanner
-              name: '@dsh-external/dsh-scanner-tools'
+              name: './node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-scanner-tools/lib/index.js'

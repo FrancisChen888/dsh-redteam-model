@@ -1,0 +1,9 @@
+- id: dsh-sec-enforce
+  name: './lib/index.js'
+  config:
+    reportGate: true
+    writeBoundary: true
+    dangerousOps: true
+    rateDiscipline: true
+    askGate: true
+    allowDirs: []

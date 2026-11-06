@@ -69,7 +69,7 @@
       Delegation:
       - 管线主体走 asset-mapping-playbook 的脚本（断点续跑、配额自管）；subagent 用于三个半自动环节——爱企查 BFS 控股穿透（网页）、搜索引擎/小程序/APP 补充源、scope 人工核对关卡的草稿整理。
       - Cross-harness review follows the ecosystem norm: not proactively invoked, listed as a suggested follow-up at the end of the report, user-triggered. 跨 harness 复核不主动调用，报告尾列建议项，用户触发制。
-      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
       Ecosystem:
       - 框架资产表（Excel 第 5 表）是 pentest / attack-defense 打点优先级的输入；单位汇总供攻防总控作战场底图；攻防模式的目标画像需求路由本模式做全量清册；本模式需要打点时把框架资产表交接给攻击类模式。
@@ -138,7 +138,7 @@
       Delegation:
       - 管线主体走 asset-mapping-playbook 的脚本（断点续跑、配额自管）；subagent 用于三个半自动环节——爱企查 BFS 控股穿透（网页）、搜索引擎/小程序/APP 补充源、scope 人工核对关卡的草稿整理。
       - Cross-harness review follows the ecosystem norm: not proactively invoked, listed as a suggested follow-up at the end of the report, user-triggered. 跨 harness 复核不主动调用，报告尾列建议项，用户触发制。
-      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
       Ecosystem:
       - 框架资产表（Excel 第 5 表）是 pentest / attack-defense 打点优先级的输入；单位汇总供攻防总控作战场底图；攻防模式的目标画像需求路由本模式做全量清册；本模式需要打点时把框架资产表交接给攻击类模式。
@@ -350,11 +350,11 @@
     # Product providers are host-plane singletons. Copy this preset, then
     # remove `disabled` from either ordinary tool row to expose that product
     # only to agents composed from the copy.
-    - id: tool-subagent-codex
+    - id: tool-subagent-codex-redteam
       name: '@deepseek-ai/dsh-tool-subagent'
       config:
-        provider: codex
-        toolName: subagent_codex
+        provider: codex-redteam
+        toolName: subagent_codex_redteam
         enableRunInBackground: false
         maxDepth: provider-managed
 
@@ -402,4 +402,4 @@
 # 扫描器封装（preset 平面：pentest / attack-defense / cloud-security / ctf-solver / asset-mapping 五预设可见；速率纪律/防盲打/证据落盘内置；
 # 仅用检测到的本机工具，缺装走三级兜底提示，绝不自动安装)
 - id: tool-scanner
-  name: '@dsh-external/dsh-scanner-tools'
+  name: './node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-scanner-tools/lib/index.js'

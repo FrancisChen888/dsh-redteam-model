@@ -263,7 +263,7 @@ class CliSubagentProvider {
 export function createProviders(config, spawnFn) {
 	return [
 		new CliSubagentProvider("claude-code", "claude", config.claudeCode, spawnFn),
-		new CliSubagentProvider("codex", "codex", config.codex, spawnFn)
+		new CliSubagentProvider("codex-redteam", "codex", config.codex, spawnFn)
 	];
 }
 

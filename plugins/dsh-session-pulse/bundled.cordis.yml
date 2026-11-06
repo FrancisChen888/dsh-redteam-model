@@ -1,0 +1,2 @@
+- id: dsh-session-pulse
+  name: './lib/index.js'
