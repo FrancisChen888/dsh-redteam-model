@@ -89,6 +89,12 @@ export function locateRoot(): string {
   return path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 }
 
+/** Bundled installs supply all child components without profile rewrites. */
+export function isBundledCollection(root = locateRoot()): boolean {
+  const manifest = readJsonFile(path.join(root, 'package.json')) as { dsh?: { redteam?: { bundled?: boolean } } } | null
+  return manifest?.dsh?.redteam?.bundled === true
+}
+
 export function dshHome(): string {
   const configured = process.env.DSH_HOME?.trim()
   if (configured === undefined || configured === '') return path.join(homedir(), '.dsh')
@@ -555,8 +561,13 @@ function pluginStatus(plugin: PluginDescriptor): PluginStatus {
   const installedVersion = readInstalledVersion(plugin)
   const latestVersion = plugin.version
 
+  const collectionRoot = path.dirname(path.dirname(plugin.dir))
+  const collection = readJsonFile(path.join(collectionRoot, 'package.json')) as { dsh?: { redteam?: { bundled?: boolean } } } | null
+  const included = collection?.dsh?.redteam?.bundled === true
   let installState: PluginStatus['installState']
-  if (dependency === undefined) {
+  if (included && existsSync(path.join(plugin.dir, 'package.json'))) {
+    installState = 'installed'
+  } else if (dependency === undefined) {
     installState = 'not-installed'
   } else if (!existsSync(plugin.dir)) {
     installState = 'broken'
@@ -835,9 +846,32 @@ function rollbackPeerLinks(changes: readonly PeerLinkChange[]): void {
   }
 }
 
-/** Replicate deploy.mjs: bridge @deepseek-ai/* and @dsh-external/* into plugins/node_modules. */
+/** Find the running host packages, including packaged Desktop launch paths. */
+export function hostRuntimeScope(bases?: readonly string[]): string | undefined {
+  const candidates = bases === undefined ? [process.env.DSH_RUNTIME_DIR ?? '', ...process.argv.slice(1)] : [...bases]
+  if (bases === undefined) {
+    try { candidates.push(fileURLToPath(import.meta.resolve('@deepseek-ai/dsh-settings'))) } catch { /* host not available */ }
+    candidates.push(profileWebDir(), path.join(dshHome(), 'profiles'))
+  }
+  for (const candidate of candidates) {
+    if (candidate === '' || candidate.startsWith('-') || !path.isAbsolute(candidate)) continue
+    let current = candidate
+    for (;;) {
+      const scope = path.join(current, 'node_modules', '@deepseek-ai')
+      // A development project can contain the three shared packages without
+      // being the running DSH. Require the DSH package as the runtime anchor.
+      if (['dsh', 'cordis', 'dsh-settings', 'dsh-tools'].every(name => existsSync(path.join(scope, name, 'package.json')))) return scope
+      const parent = path.dirname(current)
+      if (parent === current) break
+      current = parent
+    }
+  }
+  return undefined
+}
+
+/** Bridge bundled plugins to the host's shared package identities. */
 export function linkPluginPeers(root = locateRoot()): { deepseek: number; external: number } {
-  const runtime = path.join(dshHome(), 'profiles', 'node_modules', '@deepseek-ai')
+  const runtime = hostRuntimeScope() ?? path.join(dshHome(), 'profiles', 'node_modules', '@deepseek-ai')
   const localDeepseek = path.join(root, 'plugins', 'node_modules', '@deepseek-ai')
   mkdirSync(localDeepseek, { recursive: true })
 
@@ -1188,7 +1222,7 @@ export function externalEntryMap(root = locateRoot()): Record<string, string> {
   const entries: Record<string, string> = {}
   const dependencies = readProfile()?.dependencies ?? {}
   for (const plugin of scanPlugins(root)) {
-    if (dependencies[`@dsh-external/${plugin.name}`] === undefined) continue
+    if (!isBundledCollection(root) && dependencies[`@dsh-external/${plugin.name}`] === undefined) continue
     const entry = pluginEntryFile(plugin.dir)
     if (existsSync(entry)) entries[plugin.name] = pathToFileURL(entry).href
   }

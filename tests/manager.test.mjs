@@ -5,10 +5,30 @@ import { syncBuiltinESMExports } from 'node:module'
 import { homedir, tmpdir } from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { activeProfile, deployModes, dshHome, getStatus, healPresetPlanePlugins, installOne, reconcileProfileBundles, repairMode, scanModes, scanPlugins, uninstallModes, uninstallOne } from '../lib/index.js'
+import { activeProfile, deployModes, dshHome, getStatus, healPresetPlanePlugins, hostRuntimeScope, installOne, reconcileProfileBundles, repairMode, scanModes, scanPlugins, uninstallModes, uninstallOne } from '../lib/index.js'
 import { createManagerFixture } from './helpers/fixture.mjs'
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+
+test('host package discovery prefers the current Desktop runtime', () => {
+  const root = mkdtempSync(path.join(tmpdir(), 'dsh-redteam-host-'))
+  try {
+    const runtime = path.join(root, 'Contents', 'Resources', 'app', 'dsh')
+    const scope = path.join(runtime, 'node_modules', '@deepseek-ai')
+    for (const name of ['dsh', 'cordis', 'dsh-settings', 'dsh-tools']) {
+      mkdirSync(path.join(scope, name), { recursive: true })
+      writeFileSync(path.join(scope, name, 'package.json'), '{}')
+    }
+    assert.equal(hostRuntimeScope([path.join(runtime, 'node_modules', '@deepseek-ai', 'dsh-settings', 'package.json')]), scope)
+    const development = path.join(root, 'development')
+    for (const name of ['cordis', 'dsh-settings', 'dsh-tools']) {
+      mkdirSync(path.join(development, 'node_modules', '@deepseek-ai', name), { recursive: true })
+      writeFileSync(path.join(development, 'node_modules', '@deepseek-ai', name, 'package.json'), '{}')
+    }
+    assert.equal(hostRuntimeScope([path.join(development, 'test.mjs'), runtime]), scope)
+    assert.equal(hostRuntimeScope([path.join(root, 'unrelated')]), undefined)
+  } finally { rmSync(root, { recursive: true, force: true }) }
+})
 
 test('scanPlugins discovers all 17 sub-plugins with correct planes', () => {
   const plugins = scanPlugins(repoRoot)
@@ -29,7 +49,7 @@ test('scanModes discovers the ten security modes', () => {
   }
 })
 
-test('getStatus reports an untouched profile as all not-installed without profileError', () => {
+test('getStatus reports bundled plugins without requiring individual profile installs', () => {
   const previousHome = process.env.DSH_HOME
   const isolatedHome = mkdtempSync(path.join(tmpdir(), 'dsh-redteam-model-test-'))
   process.env.DSH_HOME = isolatedHome
@@ -37,9 +57,9 @@ test('getStatus reports an untouched profile as all not-installed without profil
     const status = getStatus([], repoRoot)
     assert.equal(status.summary.modesTotal, 10)
     assert.equal(status.summary.pluginsTotal, 17)
-    assert.equal(status.summary.pluginsInstalled, 0)
+    assert.equal(status.summary.pluginsInstalled, 17)
     assert.equal(status.summary.profileError, undefined)
-    assert.equal(status.plugins.every(plugin => plugin.installState === 'not-installed'), true)
+    assert.equal(status.plugins.every(plugin => plugin.installState === 'installed'), true)
   } finally {
     if (previousHome === undefined) delete process.env.DSH_HOME
     else process.env.DSH_HOME = previousHome

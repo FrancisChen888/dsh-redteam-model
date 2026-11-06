@@ -1,5 +1,5 @@
 /** Plugin rows: install state, description, versions, and per-row actions. */
-import { Button, StateDot } from '@deepseek-ai/dsh-client-ui-primitives'
+import { StateDot } from '@deepseek-ai/dsh-client-ui-primitives'
 import { IconCordisPlugin } from './iconCompat.js'
 import type { PluginInstallState, PluginStatus, Translate } from './contracts.js'
 import {
@@ -30,10 +30,6 @@ function versionLabel(plugin: PluginStatus, t: Translate): string {
   return installed
 }
 
-function isEnabledInProfile(plugin: PluginStatus): boolean {
-  return plugin.installState !== 'not-installed'
-}
-
 function conversationViewField(plugin: PluginStatus): ConversationViewField | undefined {
   return VIEW_FIELD_BY_PLUGIN[plugin.name as keyof typeof VIEW_FIELD_BY_PLUGIN]
 }
@@ -41,27 +37,17 @@ function conversationViewField(plugin: PluginStatus): ConversationViewField | un
 export function PluginSection({
   plugins,
   t,
-  busy,
-  pending,
   visibility,
   visibilityWritable,
   visibilityPending,
-  onSetEnabled,
   onSetViewVisible,
-  onUpdate,
-  onRepair,
 }: {
   plugins: PluginStatus[]
   t: Translate
-  busy: boolean
-  pending: boolean
   visibility: ConversationViewSettings
   visibilityWritable: boolean
   visibilityPending: ConversationViewField | null
-  onSetEnabled: (plugin: PluginStatus, enabled: boolean) => void
   onSetViewVisible: (field: ConversationViewField, visible: boolean) => void
-  onUpdate: (plugin: PluginStatus) => void
-  onRepair: (plugin: PluginStatus) => void
 }) {
   const conversationViewPlugins = plugins.filter(plugin => conversationViewField(plugin) !== undefined)
 
@@ -132,43 +118,7 @@ export function PluginSection({
                     <span className="dsh-rtm-version">{versionLabel(plugin, t)}</span>
                   </div>
                 </div>
-                <div className="dsh-rtm-plugin-actions">
-                  <div className="dsh-rtm-plugin-switches">
-                    <label className="dsh-rtm-switch-row" title={t('pluginEnabledRestartHint')}>
-                      <span className="dsh-rtm-switch-copy">
-                        <span>{t('pluginEnabledInProfile')}</span>
-                        <small>{t('pluginEnabledRestartHint')}</small>
-                      </span>
-                      <span className="dsh-rtm-switch">
-                        <input
-                          type="checkbox"
-                          role="switch"
-                          checked={isEnabledInProfile(plugin)}
-                          disabled={busy || pending}
-                          aria-label={`${plugin.title}: ${t('pluginEnabledInProfile')}`}
-                          onChange={event => onSetEnabled(plugin, event.target.checked)}
-                        />
-                        <i aria-hidden="true" />
-                      </span>
-                    </label>
-                  </div>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    disabled={busy || pending || state !== 'update-available'}
-                    onClick={() => onUpdate(plugin)}
-                  >
-                    {t('pluginUpdate')}
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    disabled={busy || pending || state !== 'broken'}
-                    onClick={() => onRepair(plugin)}
-                  >
-                    {t('pluginRepair')}
-                  </Button>
-                </div>
+
                 </div>
               )
             })}

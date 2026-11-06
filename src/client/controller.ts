@@ -15,7 +15,7 @@ import {
 } from './contracts.js'
 
 export interface AdminFace {
-  status(): Promise<AdminStatus>
+  status(force?: boolean): Promise<AdminStatus>
   start(request: AdminOperationStart): Promise<AdminOperationStartResult>
   cancel(id: string): Promise<AdminOperationCancelResult>
   clear(): Promise<AdminClearResult>
@@ -38,8 +38,8 @@ export class AdminController {
 
   constructor(private readonly connection: AdminConnectionHandle) {}
 
-  async status(): Promise<AdminStatus> {
-    return this.call<AdminStatus>('status', {})
+  async status(force = false): Promise<AdminStatus> {
+    return this.call<AdminStatus>('status', { force })
   }
 
   async start(request: AdminOperationStart): Promise<AdminOperationStartResult> {
@@ -56,7 +56,7 @@ export class AdminController {
 
   inject(): AdminFace {
     return {
-      status: () => this.status(),
+      status: force => this.status(force),
       start: request => this.start(request),
       cancel: id => this.cancel(id),
       clear: () => this.clear(),

@@ -1,14 +1,6 @@
 # dsh-redteam-model
 
-> 空了，闲聊。一个老安全人员的关注点：AI环境下，知识点很多知识面也很广，如果一味的给AI投递knowledge，你问它它能答得出来，但是你让它去完成一个任务而没有去给它规定这个任务如何去完成如何高效的去完成如何才能命中你需要的点，尽管它掌握着大量的知识但没有这个"workflow"去引导去把控，那么也许能得到你想要的结果，但是往往非常的浪费token，甚至有时候没有对某些方面的栅栏，它可能陷入死胡同，这就是为什么我们要去不断的设计完善workflow，把自身的经验写成skill或者agent，这样它才能按照workflow去完成任务+从旁的辅助，从而能高效的完成工作。
->
-> dsh在安全工作这方面的设计实际上是有限的，只能从playbook中去设计，本身插件的载体还是dp-harness本身，为什么开发这个，也许仅仅因为跟风吧，还是希望DeepSeek能便宜些...（另一方面harness的优势特别明显，就个人而言，在做"反拒绝"上，harness相比claude原生的hook亦或是codex原生的hook又或者其他三方智能体导致封号风险，harness那真的是太easy了。）
->
-> 总之一句话，这个项目可能没有大家想的那么好，也没有他们其他人做的那种源码写的引擎看起来炫酷，但立志于一点也只有一点
->
-> ————不断完善workflow，用workflow的方式来尽可能补足缺陷；高效+真实是核心。
-
-基于 [dsh](https://www.npmjs.com/package/@deepseek-ai/dsh) web 实现的十个 redteam 安全研究工作模式（预设）及其运行时插件，自包含、可离线部署。目标是服务于 redteam 进行授权安全研究，覆盖渗透测试、红队评估、代码审计、二进制分析、免杀对抗、应急溯源、云安全攻防、CTF 解题与资产测绘领域。
+基于 [DeepSeek Harness](https://www.npmjs.com/package/@deepseek-ai/dsh) 的十个安全研究预设及其运行时组件。预设与组件随根插件包提供，不需要在管理面板逐个安装组件。目标是服务于 redteam 进行授权安全研究，覆盖渗透测试、红队评估、代码审计、二进制分析、免杀对抗、应急溯源、云安全攻防、CTF 解题与资产测绘领域。
 
 **该项目是为 [https://github.com/deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) 赋能的项目，先装好 deepseek-harness 以后，再装该项目；**
 
@@ -67,52 +59,23 @@
 | `dsh-semgrep-audit` | `semgrep_scan` 工具：本机 semgrep 封装 + 预设离线规则集自动定位（java 自建 / php / oss 三层），命中双写 `scan-reconcile.md`/`.csv` 对账（命中≠漏洞，复核补链后经成果登记升格），检测制绝不自动装、`--metrics=off` 离线、产物只落任务工作区 |
 | `dsh-webshell-mgr` | webshell 管理：webshell 生成器→ 协议自动识别连接→ 命令执行/文件管理/数据库操作/载荷插件体系，操作台账审计；攻防评估模式立足点作战节方法论接线 |
 
-## 安装
+## 安装与使用
 
-前置：**Node.js >= 22**（DSH 本身要求）。无需预装 pnpm/dsh（经 npx 拉起）；bash/python 非必需。
-
-### 方式一：设置页管理台（推荐）
-
-把整个合集作为一个 dsh 插件安装（需 dsh web 0.1.0-rc.6+，验证于 0.1.1-rc.2）：
+先安装 DeepSeek Harness。将本仓库作为一个插件添加到需要使用的 Profile，例如桌面版：
 
 ```sh
-dsh plugin --profile web add github:SeaOf0/dsh-redteam-model
+dsh plugin --profile desktop add github:FrancisChen888/dsh-redteam-model
 ```
 
-打开 dsh web 设置页 → **Redteam Manager**，即可：
+Web Profile 可把命令中的 `desktop` 改为 `web`。安装完成后重启对应的 DSH Profile，创建会话时选择所需的安全预设。十个预设及其专业工作流继续保留，所需组件随根包加载，不必逐个安装。
 
-- 一键部署十个安全模式（空目录使用整体链接；已有实体 `.agent-presets` 时写入管理器持有的实体副本），也可在模式页一键卸载全部模式（只移除整体链接或管理器持有的实体副本，自带的无关预设与源码树不动）；
-- 安装 / 更新 / 卸载十七个运行时插件；
-- 查看操作进度与失败原因；最近 50 条记录按 profile 保留，重启时未完成任务会标记为中断失败。
+升级会保留既有会话数据和自定义预设。已有独立安装的同名组件会继续使用，内置组件不会重复注册；如果已有组件版本过旧，健康检查会报告无法启动或缺少提供方。扫描器、模型及其他外部程序仍由各自的配置和安装方式管理。
 
-模式复制状态刷新页面即可更新；宿主平面插件安装 / 卸载以及管理器自身更新后需**重启 dsh web** 生效。
+可在 **红队模型管理台**查看 DSH 版本、插件包完整性和组件运行状态。运行检查包括宿主组件、预设挂载、提示词、子智能体提供方以及各预设的工作流技能；点击“刷新”会重新核对文件。模型、凭据、外部工具、浏览器页面和第三方 API 的实际调用需要分别验证。
 
-插件依赖与 bundle 声明只修改当前 profile；模式位于当前 `DSH_HOME` 的全局 `.agent-presets`，会被该 DSH home 下的 profile 共享。写入 profile 前会备份声明，安装失败时恢复 `package.json` 与 lockfile；卸载子插件只移除运行态声明，不会删除源码。
+`claude`、`codex` 和扫描器等外部程序需要各自安装和配置，第三方 API 也需要自行配置凭据。
 
-### 方式二：源码一键部署 CLI
-
-获取源码任选其一：`git clone https://github.com/SeaOf0/dsh-redteam-model.git`，或仓库页 Code → Download ZIP 解压。
-
-```bash
-cd dsh-redteam-model/deploy
-node deploy.mjs            # 安装：预设链接 + 插件挂载 + 依赖安装（幂等可重跑）
-node deploy.mjs --check    # 离线校验：十预设挂载 + 插件真实 loader 路径 + bundle 声明
-node deploy.mjs --start    # 后台启动 dsh web → http://127.0.0.1:3080
-```
-
-也支持 `npx ./deploy`。Windows（Win10+ 自带 bsdtar）：流程一致，预设链接用 junction 免管理员。
-
-两种安装方式都会把随包的安全预设支撑规范落地为 `~/.dsh/AGENTS.security.md`（本合集专属命名空间），由 `dsh-route-boost` 的 global-agents 上下文**仅注入十个安全模式会话**——其他模式/标准会话零注入、零额外开销；文件随版本更新直达覆盖。早期版本曾把该规范装入 dsh 用户全局文件 `~/.dsh/AGENTS.md`（宿主机制对所有会话无差别生效，会造成跨模式语境污染），升级安装会自动把它收尾为可恢复的备份文件（`.bak-` 前缀）；非本包内容的全局文件绝不触碰。
-
-部署后 2 分钟人工验证：
-
-1. 打开 [http://127.0.0.1:3080](http://127.0.0.1:3080)，roster 列出十个模式（redteam 安全研究员 + 九个专业模式）；
-2. 任一会话让模型调 `gates_list`，返回专业模式门禁 schema；
-3. pentest/attack-defense/cloud-security/ctf-solver/asset-mapping 会话可见 `nuclei_scan` 等扫描工具（其余模式不可见 = preset 平面正确）；
-4. 发起任务后出现 `[route-boost] mode=... phase=...` 运行时信封快照；
-5. 未过报告门就写 `reports/` 会被 sec-enforce 拦截并指路。
-
-机器差异项（可选，缺失自动降级）：`claude`/`codex` CLI（跨 harness 双签通道）、nmap/nuclei/httpx/ffuf/jadx/frida/mingw 等工具链（playbook 工具平面检测制 + 三级兜底：检测到的工具 → MCP → 批准后安装）。
+开发时可运行 `npm ci` 安装开发依赖，再运行 `npm run check` 执行类型检查、构建和测试。本版已在 macOS 的 DSH Desktop `0.2.2-rc.1` 隔离 Profile 中验证。可用该 Desktop 附带的 Electron 运行 `tests/desktop-bundle-integration.mjs`，脚本顶部包含命令；设置 `DSH_TEST_STANDALONE=mixed` 或 `all` 可验证已有独立组件时的升级路径。
 
 ## 基础原理与架构
 
@@ -190,7 +153,7 @@ dsh-redteam-model/
 
 ## 发现问题
 
-使用中遇到 bug、误报/漏报、文档与行为不符，请到 [Issues](https://github.com/SeaOf0/dsh-redteam-model/issues) 提交，附：模式名、复现步骤、期望与实际行为、相关日志片段（gate-log/enforce-log/会话输出）。
+使用中遇到 bug、误报/漏报、文档与行为不符，请到 [Issues](https://github.com/FrancisChen888/dsh-redteam-model/issues) 提交，附：模式名、复现步骤、期望与实际行为、相关日志片段（gate-log/enforce-log/会话输出）。
 
 ## 贡献者
 

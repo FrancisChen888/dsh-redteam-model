@@ -909,7 +909,7 @@ let resultsStoreCache;
 /** 从 redteam-results 库反查 finding id（同进程只读；失败返回空串——自动面缺 ref 不缺格）。 */
 async function findFindingIdInResults(sessionId, mode, title) {
 	if (!title) return "";
-	const mod = await import("@dsh-external/dsh-redteam-results/store");
+	const mod = await import("../../dsh-redteam-results/lib/store.js");
 	if (!resultsStoreCache) resultsStoreCache = mod.openStore(path.join(os.homedir(), ".dsh", "redteam-results", "results.db"));
 	const hit = (mod.allFindings(resultsStoreCache, sessionId, mode) || []).find((f) => f.title === title);
 	return hit?.id ?? "";

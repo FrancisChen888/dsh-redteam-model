@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto'
+import { execFileSync } from 'node:child_process'
 import { readdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { build } from 'esbuild'
@@ -92,5 +93,20 @@ for (const file of ['lib/index.js', 'lib/client.js']) {
   const source = await readFile(file, 'utf8')
   await writeFile(file, source.replace(/[ \t]+$/gm, ''))
 }
+
+// Hash exactly the files npm will distribute, excluding this manifest itself.
+// npm supplies npm_execpath when running lifecycle scripts. Invoke that JS
+// entry point with Node so this also works on Windows, where npm is a .cmd.
+const npmCli = process.env.npm_execpath
+const packArgs = ['pack', '--dry-run', '--json', '--ignore-scripts']
+const packCommand = npmCli ? process.execPath : process.platform === 'win32' ? 'npm.cmd' : 'npm'
+const packCommandArgs = npmCli ? [npmCli, ...packArgs] : packArgs
+const pack = JSON.parse(execFileSync(packCommand, packCommandArgs, { encoding: 'utf8', maxBuffer: 16 * 1024 * 1024, shell: !npmCli && process.platform === 'win32' }))[0]
+const integrity = {}
+for (const entry of pack.files) {
+  if (entry.path === 'lib/package-integrity.json') continue
+  integrity[entry.path] = createHash('sha256').update(await readFile(entry.path)).digest('hex')
+}
+await writeFile('lib/package-integrity.json', `${JSON.stringify({ schemaVersion: 1, files: integrity })}\n`)
 
 console.log(`[dsh-redteam-model] built Host and Web client bundles (${PACKAGE_ID})`)

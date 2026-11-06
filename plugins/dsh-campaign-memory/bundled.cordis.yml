@@ -1,0 +1,2 @@
+- id: dsh-campaign-memory
+  name: './lib/index.js'

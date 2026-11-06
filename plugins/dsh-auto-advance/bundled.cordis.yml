@@ -1,0 +1,6 @@
+- id: dsh-auto-advance
+  name: './lib/index.js'
+  config:
+    enable: true
+    maxAutoTurns: 5
+    cooldownMs: 30000

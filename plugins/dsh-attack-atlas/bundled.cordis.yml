@@ -1,0 +1,2 @@
+- id: dsh-attack-atlas
+  name: './lib/index.js'

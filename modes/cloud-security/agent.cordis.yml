@@ -59,8 +59,8 @@
       Delegation:
       - Use workflow to fan out parallel work; assign subagents per investigation line (per-vendor cloud lines: AWS / Azure / GCP / 阿里云 / 腾讯云 / 华为云; cloud-native line: K8s / container / serverless; independent review) and merge their evidence. Role definitions, stage gates, and dispatch templates live in the cloud-playbook 子代理编排 chapter.
       - Stage gates: advance a stage only after its artifact passes the independent reviewer's gate-check (independent-review skill); the next stage's workers must read the stage artifact from disk first and abort on missing fields. 阶段推进以复核员 gate-pass 为准；下一阶段工人先读落盘产物，缺字段即中止。
-      - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对计分项独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+      - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对计分项独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
       Ecosystem: consume findings from pentest / code-audit / binary-analysis modes; own the cloud attack-surface assessment, attack-path verification, privilege-chain closure, and the cloud security assessment report; web-application entry points cooperate with pentest, IaC and cloud-service source review cooperates with code-audit, and detection-side handoff goes to attack-defense / av-evasion per the ecosystem rules.
 
@@ -110,8 +110,8 @@
       Delegation:
       - Use workflow to fan out parallel work; assign subagents per investigation line (per-vendor cloud lines: AWS / Azure / GCP / 阿里云 / 腾讯云 / 华为云; cloud-native line: K8s / container / serverless; independent review) and merge their evidence. Role definitions, stage gates, and dispatch templates live in the cloud-playbook 子代理编排 chapter.
       - Stage gates: advance a stage only after its artifact passes the independent reviewer's gate-check (independent-review skill); the next stage's workers must read the stage artifact from disk first and abort on missing fields. 阶段推进以复核员 gate-pass 为准；下一阶段工人先读落盘产物，缺字段即中止。
-      - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex 对计分项独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
-      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
+      - Cross-check: every critical finding is re-verified by an independent DSH subagent before it enters the report; the re-verified finding IS the deliverable. Do NOT proactively invoke claude/codex cross-harness review; list it as a suggested follow-up action at the end of the report and let the user decide. 每个关键发现必须经 DSH 独立子代理交叉复核，复核后的结论即为最终输出；不主动调用 claude/codex 跨 harness 复核——报告结尾把「跨 harness 复核」列为建议项（触发：用户说复核时 spawn subagent_claude_code/subagent_codex_redteam 对计分项独立复核；DSH=DeepSeek，两通道后端不同源时异构独立性强，同源时为同源互证并注明；claude 不可用降级 codex），是否执行由用户决定。
+      - When a result is uncertain or too complex, delegate to an additional DSH subagent first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 结果不确定或过于复杂时先追加 DSH 子代理；跨 harness 委派仅在用户明确要求时执行。
 
       Ecosystem: consume findings from pentest / code-audit / binary-analysis modes; own the cloud attack-surface assessment, attack-path verification, privilege-chain closure, and the cloud security assessment report; web-application entry points cooperate with pentest, IaC and cloud-service source review cooperates with code-audit, and detection-side handoff goes to attack-defense / av-evasion per the ecosystem rules.
 
@@ -314,11 +314,11 @@
     # Product providers are host-plane singletons. Copy this preset, then
     # remove `disabled` from either ordinary tool row to expose that product
     # only to agents composed from the copy.
-    - id: tool-subagent-codex
+    - id: tool-subagent-codex-redteam
       name: '@deepseek-ai/dsh-tool-subagent'
       config:
-        provider: codex
-        toolName: subagent_codex
+        provider: codex-redteam
+        toolName: subagent_codex_redteam
         enableRunInBackground: false
         maxDepth: provider-managed
 
@@ -366,5 +366,5 @@
 # 扫描器封装（preset 平面：pentest / attack-defense / cloud-security / ctf-solver / asset-mapping 五预设可见；速率纪律/防盲打/证据落盘内置；
 # 仅用检测到的本机工具，缺装走三级兜底提示，绝不自动安装)
 - id: tool-scanner
-  name: '@dsh-external/dsh-scanner-tools'
+  name: './node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-scanner-tools/lib/index.js'
 

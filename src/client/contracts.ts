@@ -72,7 +72,15 @@ export interface OperationRecord {
   error?: string
 }
 
+export interface AdminHealth {
+  hostVersion: string | null
+  bundleIntegrity: 'complete' | 'incomplete' | 'unknown'
+  runtimeHealth: 'healthy' | 'unhealthy' | 'unknown'
+  details: string[]
+}
+
 export interface AdminStatus {
+  health?: AdminHealth
   summary: AdminSummary
   modes: ModeStatus[]
   plugins: PluginStatus[]

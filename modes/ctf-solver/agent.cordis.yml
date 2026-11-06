@@ -53,7 +53,7 @@
 
       Delegation:
       - Use workflow to fan out parallel work; assign one subagent per challenge line (or per module cluster) and merge their flags into the ledger. Module routing table and the escalation ladder live in the ctf-playbook.
-      - Stuck-challenge escalation: when a challenge stalls, delegate to an additional DSH subagent with a fresh angle first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 卡题先追加 DSH 子代理换思路；跨 harness 委派仅在用户明确要求时执行。
+      - Stuck-challenge escalation: when a challenge stalls, delegate to an additional DSH subagent with a fresh angle first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 卡题先追加 DSH 子代理换思路；跨 harness 委派仅在用户明确要求时执行。
       - Critical-path review: before the report, an independent DSH subagent re-verifies each solved flag against its evidence (platform echo / check output); the re-verified ledger IS the deliverable. 报告前由 DSH 独立子代理逐题复核 flag 证据，复核后的台账即为最终输出。
 
       Ecosystem: the CTF solver owns the solving orchestration and flag ledger; deep single-module techniques live in the module refs (ctf-solver/refs/ctf-*/SKILL.md, routed by the playbook module table); solved payloads / scripts / techniques can be handed to pentest / binary-analysis as knowledge inputs per the ecosystem rules.
@@ -98,7 +98,7 @@
 
       Delegation:
       - Use workflow to fan out parallel work; assign one subagent per challenge line (or per module cluster) and merge their flags into the ledger. Module routing table and the escalation ladder live in the ctf-playbook.
-      - Stuck-challenge escalation: when a challenge stalls, delegate to an additional DSH subagent with a fresh angle first; cross-harness delegation (subagent_claude_code/subagent_codex) only on explicit user request. 卡题先追加 DSH 子代理换思路；跨 harness 委派仅在用户明确要求时执行。
+      - Stuck-challenge escalation: when a challenge stalls, delegate to an additional DSH subagent with a fresh angle first; cross-harness delegation (subagent_claude_code/subagent_codex_redteam) only on explicit user request. 卡题先追加 DSH 子代理换思路；跨 harness 委派仅在用户明确要求时执行。
       - Critical-path review: before the report, an independent DSH subagent re-verifies each solved flag against its evidence (platform echo / check output); the re-verified ledger IS the deliverable. 报告前由 DSH 独立子代理逐题复核 flag 证据，复核后的台账即为最终输出。
 
       Ecosystem: the CTF solver owns the solving orchestration and flag ledger; deep single-module techniques live in the module refs (ctf-solver/refs/ctf-*/SKILL.md, routed by the playbook module table); solved payloads / scripts / techniques can be handed to pentest / binary-analysis as knowledge inputs per the ecosystem rules.
@@ -302,11 +302,11 @@
     # Product providers are host-plane singletons. Copy this preset, then
     # remove `disabled` from either ordinary tool row to expose that product
     # only to agents composed from the copy.
-    - id: tool-subagent-codex
+    - id: tool-subagent-codex-redteam
       name: '@deepseek-ai/dsh-tool-subagent'
       config:
-        provider: codex
-        toolName: subagent_codex
+        provider: codex-redteam
+        toolName: subagent_codex_redteam
         enableRunInBackground: false
         maxDepth: provider-managed
 
@@ -354,5 +354,5 @@
 # 扫描器封装（preset 平面：pentest / attack-defense / cloud-security / ctf-solver / asset-mapping 五预设可见；速率纪律/防盲打/证据落盘内置；
 # 仅用检测到的本机工具，缺装走三级兜底提示，绝不自动安装)
 - id: tool-scanner
-  name: '@dsh-external/dsh-scanner-tools'
+  name: './node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-scanner-tools/lib/index.js'
 

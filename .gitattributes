@@ -1,3 +1,4 @@
+* text=auto eol=lf
 modes/** text eol=lf
 src/** text eol=lf
 lib/** text eol=lf

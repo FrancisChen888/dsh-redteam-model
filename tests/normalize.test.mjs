@@ -58,6 +58,13 @@ test('rewriteCompositionText turns known @dsh-external rows into file: rows', ()
   assert.match(result.notes.join('\n'), /dsh-scanner-tools rewritten to file: row/)
 })
 
+test('bundled preset paths become absolute when deployed independently', () => {
+  const bundled = "- id: tool-scanner\n  name: './node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-scanner-tools/lib/index.js'\n"
+  const result = rewriteCompositionText(bundled, { entries: { 'dsh-scanner-tools': 'file:///tmp/package/plugins/dsh-scanner-tools/lib/index.js' } })
+  assert.match(result.text, /name: 'file:\/\/\/tmp\/package\/plugins\/dsh-scanner-tools\/lib\/index\.js'/)
+  assert.equal(rewriteCompositionText(result.text, { entries: {} }).changed, false)
+})
+
 test('rewriteCompositionText leaves unknown @dsh-external rows and other rows alone', () => {
   const result = rewriteCompositionText(SAMPLE, { entries: {} })
   // No engine decision and no entry for the external row: nothing changes,
