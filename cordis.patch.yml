@@ -60,11 +60,21 @@
       disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-route-boost'); } catch { return false; } })()"
       config:
         path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-route-boost/bundled.cordis.yml
+    - id: bundled-dsh-scanner-tools
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-scanner-tools'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-scanner-tools/bundled.cordis.yml
     - id: bundled-dsh-sec-enforce
       name: cordis:include
       disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-sec-enforce'); } catch { return false; } })()"
       config:
         path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-sec-enforce/bundled.cordis.yml
+    - id: bundled-dsh-semgrep-audit
+      name: cordis:include
+      disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-semgrep-audit'); } catch { return false; } })()"
+      config:
+        path: ./node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-semgrep-audit/bundled.cordis.yml
     - id: bundled-dsh-session-pulse
       name: cordis:include
       disabled: !!js "(() => { try { const f = process.getBuiltinModule('node:fs'); const p = JSON.parse(f.readFileSync(new URL('package.json', baseUrl), 'utf8')); return (p.dsh?.profile?.bundles ?? []).includes('@dsh-external/dsh-session-pulse'); } catch { return false; } })()"

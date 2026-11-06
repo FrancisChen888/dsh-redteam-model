@@ -365,7 +365,3 @@
   config:
     fetch: false
     searchTimeoutMs: 60000
-# semgrep 封装（preset 平面：code-audit 可见；预设离线三层规则集自动定位+证据落盘+
-# 命中对账双写 md/csv 内置；仅用检测到的本机 semgrep，缺装走三级兜底提示，绝不自动安装)
-- id: tool-semgrep
-  name: './node_modules/@dsh-external/dsh-redteam-model/plugins/dsh-semgrep-audit/lib/index.js'

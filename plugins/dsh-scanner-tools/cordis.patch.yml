@@ -1,12 +1,14 @@
-# dsh-scanner-tools 备用宿主层挂载行（当前【不启用】：本插件挂 preset 平面，
-# 由 pentest / attack-defense 的 agent.cordis.yml 各持一行。若未来要全模式开放扫描工具，
-# 取消下面 insert 行的注释即可用。）
+# dsh-scanner-tools：本机 nuclei / httpx / ffuf 等扫描器封装（保守速率默认、超速审计、
+# 证据落盘、nuclei 命中→scan-reconcile 待处置、主动扫描的 assets.md 防盲打内置；
+# 仅调用检测到的本机二进制，缺装走三级兜底提示，绝不自动安装）。
 #
-# 注意：package.json 里【故意不声明 dsh.bundle】。preset 平面插件一旦声明，
-# 宿主 CLI 的 bundle reconcile 会按声明把它写进 dsh.profile.bundles，
-# 管理台随即把它判成平面错配（异常），"修复"清掉的行下一次 reconcile 又回来。
-# 要改为宿主层挂载时，再把 dsh.bundle.patch 指回本文件并放开下面这行。
+# 宿主平面：随集合 bundle 全模式常驻，不再由模式预设持行。本文件是该插件被单独装进
+# profile 时用的 bundle 补丁；集合的 cordis.patch.yml 另有一条 bundled-dsh-scanner-tools
+# include 行读 ./bundled.cordis.yml，且在该包已列入 dsh.profile.bundles 时自动停用 ——
+# 两条路径互斥，永远只挂一次。
 #
-# 注意：本文件必须保持合法的顶层 YAML 数组——仅含注释时解析为 null，
+# 本文件必须保持合法的顶层 YAML 数组：仅含注释时解析为 null，
 # 会导致 dsh 启动器报 "must be a top-level YAML array" 而整个 profile 无法启动。
-[]
+- insert:
+    - id: tool-scanner
+      name: '@dsh-external/dsh-scanner-tools'
