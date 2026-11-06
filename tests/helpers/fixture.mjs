@@ -96,11 +96,17 @@ export function createManagerFixture(options = {}) {
   }
   writeJson(path.join(root, 'lib', 'mode-digests.json'), { schemaVersion: 1, modes: digests })
 
+  const presetPlane = options.presetPlane ?? []
   for (const name of plugins) {
+    // A plugin's plane is a manifest fact: host-plane plugins declare
+    // `dsh.bundle` (composed at boot, either as their own profile bundle or
+    // through the collection include row); preset-plane plugins declare
+    // nothing and can only be reached from a preset row.
     writeJson(path.join(root, 'plugins', name, 'package.json'), {
       name: `@dsh-external/${name}`,
       version: '1.0.0',
       description: `${name} fixture`,
+      ...(presetPlane.includes(name) ? {} : { dsh: { bundle: { patch: './cordis.patch.yml' } } }),
     })
   }
 

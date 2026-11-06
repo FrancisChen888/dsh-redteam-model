@@ -23,7 +23,8 @@ Linux）即可一键部署。
 | dsh-sec-enforce | `plugins/` | 确定性工具拦截（报告门/写边界/高危/速率特征 + enforce-log 留痕） | 宿主（bundles） |
 | dsh-hunter | `plugins/` | 「hunter狩猎」：FOFA/Hunter/Quake 三平台资产搜索（统一 DSL 自动转语法/限额分页导出）+ 代码审计一键实测流水线（L0 指纹判定/L1 仅授权资产）+ 会话标签页（与 redteam 成果并排） | 宿主（bundles） |
 | dsh-redteam-results | `plugins/` | 会话隔离成果页「redteam 成果」（九模式侧栏；五板式（CTF 复用 ledger 台账板式）：渗透/代审=漏洞报告、二进制/攻防/免杀=产物清单、研究员=任务台账、应急=攻击链时间线、云安全=云攻击路径；redteam_finding_register/update/delete） | 宿主（bundles） |
-| dsh-scanner-tools | `plugins/` | nuclei_scan/httpx_probe/ffuf_fuzz（速率纪律/防盲打/证据落盘） | **preset 平面**（仅 pentest/attack-defense/cloud-security 预设行挂载） |
+| dsh-scanner-tools | `plugins/` | nuclei_scan/httpx_probe/ffuf_fuzz（速率纪律/防盲打/证据落盘） | 宿主（bundles，全模式常驻） |
+| dsh-semgrep-audit | `plugins/` | semgrep_scan（预设离线三层规则集自动定位/命中双写 scan-reconcile/证据落盘） | 宿主（bundles，全模式常驻） |
 | dsh-mcp-studio | `plugins/` | MCP 加载工作台（通用类 MCP 宿主层共用挂载） | 宿主（bundles） |
 
 ## 目标机一键部署（跨平台：win / mac / linux）

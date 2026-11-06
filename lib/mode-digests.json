@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
   "modes": {
-    "asset-mapping": "sha256:59788ed17ffa4aaa45212e685718781a22f501bc99cf5bbd80d862a1fd6e549f",
-    "attack-defense": "sha256:50258f3bb5400f79e1a0ba05aa3a48a4e9a511957669b081eb3c6b0a138ea820",
+    "asset-mapping": "sha256:0c199a1c071feb45fd7a783931d970ca3b0828cf763e8f4eb0a1fd7b6bf487ea",
+    "attack-defense": "sha256:e31ce8409e2ef39a242cc7ae2402170aec31edd7dd035572299cb5c749010201",
     "av-evasion": "sha256:535461ce117cea743e3dac852e4db545cfdb56fbfdc5d5faf20cc187640a2869",
     "binary-analysis": "sha256:de998b6fa09915713866ab0eed8a6a5997b5d2657faf0b82e346a0bed03516b9",
-    "cloud-security": "sha256:3c2e3e21dcd9f8a138177b61e1b3d21b76e10da3a249c2ae713d2736c9ec7ca2",
-    "code-audit": "sha256:60b7e1a0e5aab7fc51a5c471c89bb7432a245e77ea65a13fe4ed246b2d32bdf6",
-    "ctf-solver": "sha256:15d05f41e7f0eaae96770e34396190ea53b35b0a638f7c53e481a6e126c73c84",
+    "cloud-security": "sha256:fdc1ac1dda43ae235e0977cc4d5fbdacc631ef4d2e1ffcc8cede8d68897f0fc2",
+    "code-audit": "sha256:a2006743cb5edbdd4ca8d7937015e21e6c8f6340ac908b3a2ba1d13b0b72a73d",
+    "ctf-solver": "sha256:963127eb9aa3741116f2b213a90b429bf5ac9a8cd7d1f01aa59c8076d22b2c2e",
     "incident-response": "sha256:fedbf1091d63da2f46e4fd8ef562845be718f38d4b9eec2c884ecfb72864e17e",
-    "pentest": "sha256:8d864513463d44a0401185f29225da432d2508a803ecef7c9d7713d0454e7dce",
+    "pentest": "sha256:f45ba3292d7bad70e1c9ef75c0ffb036e1453a5f15907a46884c3651fb9a47e8",
     "redteam": "sha256:5dd8a95991e4b450bcc59dbee5f5c61ed1bad99b661f77a4fc25c504c4a2a6e2"
   }
 }

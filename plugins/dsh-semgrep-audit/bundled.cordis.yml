@@ -1,0 +1,2 @@
+- id: tool-semgrep
+  name: './lib/index.js'

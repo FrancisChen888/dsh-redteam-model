@@ -1,6 +1,6 @@
 {
   "name": "@dsh-external/dsh-redteam-model",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "DSH security research presets with bundled runtime plugins and a health dashboard.",
   "type": "module",
   "main": "./lib/index.js",

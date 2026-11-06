@@ -1,8 +1,9 @@
 # dsh-scanner-tools（v0.1.0 已实现）
 
 pentest 三级兜底第一级的运行时化：本机 nuclei/httpx/ffuf 封装为模型工具，纪律内置。
-挂载：**preset 平面**（pentest / attack-defense / cloud-security / ctf-solver 的 agent.cordis.yml 各一行；宿主层行见
-cordis.patch.yml 注释，默认不启用——preset 平面分层）。
+挂载：**宿主平面**（随集合 bundle 全模式常驻；本插件的 `cordis.patch.yml` 供单独安装时使用，
+集合的 `cordis.patch.yml` 另有 `bundled-dsh-scanner-tools` include 行读 `./bundled.cordis.yml`，
+该包已列入 `dsh.profile.bundles` 时 include 行自动停用——两条路径互斥，永远只挂一次）。
 
 ## 工具
 

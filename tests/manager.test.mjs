@@ -30,11 +30,19 @@ test('host package discovery prefers the current Desktop runtime', () => {
   } finally { rmSync(root, { recursive: true, force: true }) }
 })
 
-test('scanPlugins discovers all 17 sub-plugins with correct planes', () => {
+test('scanPlugins discovers all 17 sub-plugins, all of them on the host plane', () => {
   const plugins = scanPlugins(repoRoot)
   assert.equal(plugins.length, 17)
-  assert.equal(plugins.filter(plugin => plugin.mountPlane === 'preset').map(plugin => plugin.name).sort().join(','), 'dsh-scanner-tools,dsh-semgrep-audit')
+  // The plane follows the manifest, not a name list: scanner-tools and
+  // semgrep-audit used to ride preset rows only, and a profile carrying their
+  // link dependencies therefore read as "installed, not active" in a plugin
+  // market that only understands host bundles. They declare `dsh.bundle` now,
+  // so nothing may fall back to the preset plane.
+  assert.deepEqual(plugins.filter(plugin => plugin.mountPlane === 'preset').map(plugin => plugin.name), [])
   for (const plugin of plugins) {
+    const manifest = JSON.parse(readFileSync(path.join(repoRoot, 'plugins', plugin.name, 'package.json'), 'utf8'))
+    assert.equal(manifest.dsh?.bundle?.patch, './cordis.patch.yml', `${plugin.name} must declare its own bundle patch`)
+    assert.equal(existsSync(path.join(repoRoot, 'plugins', plugin.name, 'bundled.cordis.yml')), true, `${plugin.name} needs a bundled.cordis.yml for the collection include row`)
     assert.match(plugin.name, /^dsh-[a-z0-9-]+$/)
     assert.notEqual(plugin.version, '0.0.0')
   }
@@ -207,18 +215,18 @@ test('dshHome handles blank, tilde, relative and absolute values', () => {
 })
 
 test('preset-plane bundle pollution is broken and repair removes every occurrence', async () => {
-  const fixture = createManagerFixture({ plugins: ['dsh-scanner-tools'] })
+  const fixture = createManagerFixture({ plugins: ['dsh-preset-probe'], presetPlane: ['dsh-preset-probe'] })
   try {
-    const pkg = '@dsh-external/dsh-scanner-tools'
+    const pkg = '@dsh-external/dsh-preset-probe'
     const manifest = JSON.parse(readFileSync(fixture.profilePackage, 'utf8'))
-    manifest.dependencies[pkg] = `link:${path.join(fixture.root, 'plugins', 'dsh-scanner-tools')}`
+    manifest.dependencies[pkg] = `link:${path.join(fixture.root, 'plugins', 'dsh-preset-probe')}`
     manifest.dsh.profile.bundles.push(pkg, pkg)
     writeFileSync(fixture.profilePackage, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
-    const installed = path.join(fixture.profile, 'node_modules', '@dsh-external', 'dsh-scanner-tools')
+    const installed = path.join(fixture.profile, 'node_modules', '@dsh-external', 'dsh-preset-probe')
     mkdirSync(installed, { recursive: true })
     writeFileSync(path.join(installed, 'package.json'), '{"version":"1.0.0"}\n', 'utf8')
     assert.equal(getStatus([], fixture.root).plugins[0]?.installState, 'broken')
-    await installOne('dsh-scanner-tools', {}, fixture.root)
+    await installOne('dsh-preset-probe', {}, fixture.root)
     assert.equal(fixture.bundles().includes(pkg), false)
   } finally {
     fixture.cleanup()
@@ -226,15 +234,16 @@ test('preset-plane bundle pollution is broken and repair removes every occurrenc
 })
 
 test('reconcileProfileBundles clears preset-plane pollution without an install', () => {
-  const fixture = createManagerFixture({ plugins: ['dsh-scanner-tools', 'dsh-sec-enforce'] })
+  const fixture = createManagerFixture({ plugins: ['dsh-preset-probe', 'dsh-sec-enforce'], presetPlane: ['dsh-preset-probe'] })
   try {
-    const presetPkg = '@dsh-external/dsh-scanner-tools'
+    const presetPkg = '@dsh-external/dsh-preset-probe'
     const hostPkg = '@dsh-external/dsh-sec-enforce'
     const manifest = JSON.parse(readFileSync(fixture.profilePackage, 'utf8'))
-    manifest.dependencies[presetPkg] = `link:${path.join(fixture.root, 'plugins', 'dsh-scanner-tools')}`
+    manifest.dependencies[presetPkg] = `link:${path.join(fixture.root, 'plugins', 'dsh-preset-probe')}`
     manifest.dependencies[hostPkg] = `link:${path.join(fixture.root, 'plugins', 'dsh-sec-enforce')}`
-    // The CLI's bundle reconcile added the preset-plane plugin (a package that
-    // declared `dsh.bundle`) and dropped the host-plane row.
+    // A preset-plane plugin is reached from its preset row only; a bundle row
+    // naming it is pollution the CLI's own reconcile used to add. A host-plane
+    // package is the one that belongs there, exactly once.
     manifest.dsh.profile.bundles.push(presetPkg)
     writeFileSync(fixture.profilePackage, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
 
@@ -273,7 +282,10 @@ test('activeProfile detects the profile from desktop positional argv', () => {
 })
 
 test('healPresetPlanePlugins restores stranded preset-plane dependencies', () => {
-  const fixture = createManagerFixture({ plugins: ['dsh-scanner-tools', 'dsh-semgrep-audit', 'dsh-hunter', 'dsh-sec-enforce'] })
+  const fixture = createManagerFixture({
+    plugins: ['dsh-preset-probe', 'dsh-preset-probe-two', 'dsh-hunter', 'dsh-sec-enforce'],
+    presetPlane: ['dsh-preset-probe', 'dsh-preset-probe-two'],
+  })
   try {
     writeFileSync(path.join(fixture.root, 'package.json'), `${JSON.stringify({ name: '@dsh-external/dsh-redteam-model', version: '1.0.0' }, null, 2)}\n`, 'utf8')
     const manifest = JSON.parse(readFileSync(fixture.profilePackage, 'utf8'))
@@ -282,17 +294,17 @@ test('healPresetPlanePlugins restores stranded preset-plane dependencies', () =>
     // `web`, and the CLI bundle reconcile left a preset-plane bundle row.
     manifest.dependencies['@dsh-external/dsh-redteam-model'] = `link:${fixture.root}`
     manifest.dependencies['@dsh-external/dsh-hunter'] = `link:${path.join(fixture.root, 'plugins', 'dsh-hunter')}`
-    manifest.dsh.profile.bundles.push('@dsh-external/dsh-scanner-tools')
+    manifest.dsh.profile.bundles.push('@dsh-external/dsh-preset-probe')
     writeFileSync(fixture.profilePackage, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
 
-    assert.match(healPresetPlanePlugins(fixture.root) ?? '', /restored preset-plane dependencies: @dsh-external\/dsh-scanner-tools, @dsh-external\/dsh-semgrep-audit/)
+    assert.match(healPresetPlanePlugins(fixture.root) ?? '', /restored preset-plane dependencies: @dsh-external\/dsh-preset-probe, @dsh-external\/dsh-preset-probe-two/)
     const healed = JSON.parse(readFileSync(fixture.profilePackage, 'utf8'))
-    assert.equal(healed.dependencies['@dsh-external/dsh-scanner-tools'], `link:${path.join(fixture.root, 'plugins', 'dsh-scanner-tools')}`)
-    assert.equal(healed.dependencies['@dsh-external/dsh-semgrep-audit'], `link:${path.join(fixture.root, 'plugins', 'dsh-semgrep-audit')}`)
+    assert.equal(healed.dependencies['@dsh-external/dsh-preset-probe'], `link:${path.join(fixture.root, 'plugins', 'dsh-preset-probe')}`)
+    assert.equal(healed.dependencies['@dsh-external/dsh-preset-probe-two'], `link:${path.join(fixture.root, 'plugins', 'dsh-preset-probe-two')}`)
     assert.equal(healed.dependencies['@dsh-external/dsh-hunter'], `link:${path.join(fixture.root, 'plugins', 'dsh-hunter')}`)
     // Host-plane plugins stay opt-in: only the preset-plane pair is restored.
     assert.equal(healed.dependencies['@dsh-external/dsh-sec-enforce'], undefined)
-    assert.equal(healed.dsh.profile.bundles.includes('@dsh-external/dsh-scanner-tools'), false)
+    assert.equal(healed.dsh.profile.bundles.includes('@dsh-external/dsh-preset-probe'), false)
     // Idempotent: a healed manifest is left untouched, and rewrites nothing.
     const before = readFileSync(fixture.profilePackage, 'utf8')
     assert.equal(healPresetPlanePlugins(fixture.root), null)
@@ -303,7 +315,7 @@ test('healPresetPlanePlugins restores stranded preset-plane dependencies', () =>
 })
 
 test('healPresetPlanePlugins leaves a profile without the collection alone', () => {
-  const fixture = createManagerFixture({ plugins: ['dsh-scanner-tools', 'dsh-semgrep-audit'] })
+  const fixture = createManagerFixture({ plugins: ['dsh-preset-probe', 'dsh-preset-probe-two'], presetPlane: ['dsh-preset-probe', 'dsh-preset-probe-two'] })
   try {
     writeFileSync(path.join(fixture.root, 'package.json'), `${JSON.stringify({ name: '@dsh-external/dsh-redteam-model', version: '1.0.0' }, null, 2)}\n`, 'utf8')
     const manifest = JSON.parse(readFileSync(fixture.profilePackage, 'utf8'))

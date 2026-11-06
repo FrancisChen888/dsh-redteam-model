@@ -9,7 +9,9 @@ import { inspectHealth } from '../lib/index.js'
 function fixture() {
   const root = mkdtempSync(path.join(tmpdir(), 'redteam-health-'))
   const put = (file, text) => { const f = path.join(root, file); mkdirSync(path.dirname(f), { recursive: true }); writeFileSync(f, text) }
-  put('plugins/dsh-hunter/package.json', '{"name":"dsh-hunter","version":"1.0.0"}')
+  // Host-plane plugins declare `dsh.bundle`; the plane is read from the
+  // manifest, so a fixture without it would not be required at boot.
+  put('plugins/dsh-hunter/package.json', '{"name":"dsh-hunter","version":"1.0.0","dsh":{"bundle":{"patch":"./cordis.patch.yml"}}}')
   put('modes/redteam/preset.yml', 'name: redteam\n')
   put('important.dat', 'retained')
   put('lib/package-integrity.json', JSON.stringify({ files: { 'important.dat': createHash('sha256').update('retained').digest('hex') } }))

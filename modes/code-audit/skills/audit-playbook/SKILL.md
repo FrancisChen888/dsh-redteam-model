@@ -343,7 +343,7 @@ error/warning/note（按 severity 映射）、`locations[].physicalLocation`=
 #### 静态扫描
 
 - **semgrep**（检测后使用）——多语言规则扫描主工具。
-  - **首选封装工具 `semgrep_scan`**（preset 平面）：规则层参数化（builtin-java=402 自建 /
+  - **首选封装工具 `semgrep_scan`**（宿主平面，全模式常驻）：规则层参数化（builtin-java=402 自建 /
     builtin-php / oss=1080 开源 / custom=自定路径），预设 refs/ 自动定位，产物自动落
     `artifacts/scans/`+evidence-index 回行，**命中自动双写 scan-reconcile.md/.csv 待处置行**
     （命中≠漏洞——复核后经 `redteam_finding_register` sourceOrigin=scan-confirmed/

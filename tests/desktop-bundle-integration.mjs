@@ -46,8 +46,7 @@ assert(['none', 'all', 'mixed'].includes(standalone), 'DSH_TEST_STANDALONE must 
 const dependencies = { [dependency]: `link:${model}` }
 const bundles = ['@deepseek-ai/dsh-base', '@deepseek-ai/dsh-web-app', dependency]
 const hosts = fs.readdirSync(path.join(model, 'plugins')).filter(name =>
-  fs.existsSync(path.join(model, 'plugins', name, 'package.json')) &&
-  !['dsh-scanner-tools', 'dsh-semgrep-audit'].includes(name),
+  fs.existsSync(path.join(model, 'plugins', name, 'package.json')),
 ).sort()
 for (const [index, name] of hosts.entries()) {
   if (standalone === 'none' || (standalone === 'mixed' && index % 2 !== 0)) continue

@@ -7,4 +7,5 @@ code-audit 扫描对账闭环的运行时化——本机 semgrep 封装为模型
 - 命中进对账（双写）：`scan-reconcile.md`（人读）+ `scan-reconcile.csv`（机读，表头 `scanner,rule,file,line,verdict,reason`）待处置行——**命中 ≠ 漏洞**，复核+补真实调用链后经 `redteam_finding_register(sourceOrigin=scan-confirmed / scan-false-positive)` 升格，A3 门数量守恒
 - 只读：静态扫描不写目标仓；产物只落任务工作区
 
-挂载：preset 平面（code-audit 的 agent.cordis.yml 一行）。测试：`node test/run.mjs`
+挂载：宿主平面（随集合 bundle 全模式常驻；`cordis.patch.yml` 供单独安装时使用，集合的 include 行读
+`bundled.cordis.yml` 且在该包已列入 `dsh.profile.bundles` 时自动停用——互斥，只挂一次）。测试：`node test/run.mjs`

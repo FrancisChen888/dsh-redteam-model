@@ -38,6 +38,7 @@ import {
 import type {
   AdminStatus,
   ModeStatus,
+  MountPlane,
   OperationRecord,
   PluginStatus,
 } from './types.ts'
@@ -169,7 +170,12 @@ export function scanPlugins(root = locateRoot()): PluginDescriptor[] {
     const dir = path.join(pluginsRoot, name)
     const raw = readJsonFile(path.join(dir, 'package.json')) as Record<string, unknown> | null
     const pkg = raw ?? {}
-    const mountPlane = name === 'dsh-scanner-tools' || name === 'dsh-semgrep-audit' ? 'preset' : 'host'
+    // The plane is a manifest fact, not a name list: a plugin that declares
+    // `dsh.bundle` is a host-plane bundle the harness composes at boot (as its
+    // own profile bundle, or through this collection's `bundled-<name>` include
+    // row); a plugin that declares none can only be reached from a preset row.
+    const dsh = pkg.dsh as { bundle?: unknown } | null | undefined
+    const mountPlane: MountPlane = dsh !== null && typeof dsh === 'object' && dsh.bundle !== undefined ? 'host' : 'preset'
     return {
       name,
       title: titleFromDir(name),

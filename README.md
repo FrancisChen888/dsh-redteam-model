@@ -101,9 +101,9 @@ flowchart TB
         MS[dsh-mcp-studio MCP 工作台]
         HU[dsh-hunter 资产狩猎+实测]
         AA[dsh-attack-atlas 攻击面图谱]
+        SC[dsh-scanner-tools 扫描工具]
+        SM[dsh-semgrep-audit semgrep 审计]
     end
-
-    SC[dsh-scanner-tools 扫描工具 preset 平面]
 
     PS --> PE & PB & SK & RF
     PS -->|每轮装配| RB
@@ -112,10 +112,12 @@ flowchart TB
     PS -->|复核委托| SA
     PS -->|审计实测| HU
     PS -->|矩阵覆盖与自定义方法论| AA
-    PS -->|pentest/ad 等 5 模式专用| SC
+    PS -->|扫描工具（全模式常驻）| SC
+    PS -->|静态审计（全模式常驻）| SM
     SG -->|判定| GL[(gate-log.md)]
     SE -->|拒绝留痕| EL[(enforce-log.md)]
     SC -->|产物| EV[(evidence-index.md / scan-reconcile.md)]
+    SM -->|产物| EV
 ```
 
 ## 项目结构
