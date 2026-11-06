@@ -105,6 +105,11 @@ export interface AdminClearResult {
   cleared: boolean
 }
 
+export interface AdminRecomposeResult {
+  /** What the manifest rewrite did, for the toast line. */
+  detail: string
+}
+
 export interface SettingsSectionComponent {
   (): ReactElement | null
 }

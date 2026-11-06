@@ -90,7 +90,7 @@ test('RPC registers as loopback and rejects unknown input', async () => {
 test('Fetch routes under /api carry the RPC envelope end to end (#11 follow-up)', async () => {
   const fixture = rpcFixture()
   try {
-    assert.equal(fixture.fetchRoutes.size, 4)
+    assert.equal(fixture.fetchRoutes.size, 5)
     const status = await fixture.callFetch('status', {})
     assert.equal(status.ok, true)
     assert.equal(typeof status.value.summary.pluginsTotal, 'number')

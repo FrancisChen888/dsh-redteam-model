@@ -10,9 +10,21 @@ export function createAdminPage(face: AdminFace, t: Translate, _visibilityScope:
   return function AdminPage(): ReactElement {
     const [status, setStatus] = useState<AdminStatus | null>(null)
     const [error, setError] = useState<string | null>(null)
+    const [applying, setApplying] = useState(false)
+    const [applied, setApplied] = useState<string | null>(null)
     const refresh = useCallback(async () => {
       try { setStatus(await face.status(true)); setError(null) }
       catch (cause) { setStatus(null); setError(errorMessage(cause)) }
+    }, [face])
+    // A version upgrade replaces files in place; the host only swaps them when
+    // a recomposition runs, and it watches the ordered bundle list for that.
+    // The manager moves its own entry, which is a no-op for composition and a
+    // real trigger for the watcher — the update lands without a restart.
+    const applyUpdate = useCallback(async () => {
+      setApplying(true)
+      try { setApplied((await face.recompose()).detail); setError(null) }
+      catch (cause) { setApplied(null); setError(errorMessage(cause)) }
+      finally { setApplying(false) }
     }, [face])
     useEffect(() => {
       let alive = true
@@ -34,8 +46,15 @@ export function createAdminPage(face: AdminFace, t: Translate, _visibilityScope:
     return <div className="dsh-rtm">
       <div className="dsh-rtm-head">
         <div><h2 className="dsh-rtm-title">{t('title')}</h2><p className="dsh-rtm-sub">{t('healthSubtitle')}</p></div>
-        <Button size="sm" variant="outline" icon={<IconRefresh size={14} />} onClick={() => void refresh()}>{t('refresh')}</Button>
+        <div className="dsh-rtm-head-actions">
+          <Button size="sm" variant="outline" disabled={applying} onClick={() => void applyUpdate()}>
+            {applying ? t('recomposeRunning') : t('recompose')}
+          </Button>
+          <Button size="sm" variant="outline" icon={<IconRefresh size={14} />} onClick={() => void refresh()}>{t('refresh')}</Button>
+        </div>
       </div>
+      {applied !== null && <div className="dsh-rtm-note" role="status">{t('recomposeDone')}: {applied}</div>}
+      <p className="dsh-rtm-restart-hint">{t('recomposeHint')}</p>
       {error !== null && <div className="dsh-rtm-error" role="alert"><span>{t('requestFailed')}: {error}</span></div>}
       {status === null && error === null ? <div className="dsh-rtm-loading">{t('loading')}</div> : <>
         <section className={`dsh-rtm-overall dsh-rtm-overall--${overall}`} aria-live="polite">

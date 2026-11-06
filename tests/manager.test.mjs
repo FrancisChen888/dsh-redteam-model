@@ -5,7 +5,7 @@ import { syncBuiltinESMExports } from 'node:module'
 import { homedir, tmpdir } from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { activeProfile, deployModes, dshHome, getStatus, healPresetPlanePlugins, hostRuntimeScope, installOne, reconcileProfileBundles, repairMode, scanModes, scanPlugins, uninstallModes, uninstallOne } from '../lib/index.js'
+import { activeProfile, deployModes, dshHome, getStatus, healPresetPlanePlugins, hostRuntimeScope, nudgeRecompose, installOne, reconcileProfileBundles, repairMode, scanModes, scanPlugins, uninstallModes, uninstallOne } from '../lib/index.js'
 import { createManagerFixture } from './helpers/fixture.mjs'
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -278,6 +278,39 @@ test('activeProfile detects the profile from desktop positional argv', () => {
     assert.equal(activeProfile(), 'web')
   } finally {
     process.argv = originalArgv
+  }
+})
+
+test('nudgeRecompose moves this bundle so the host recomposes', () => {
+  const fixture = createManagerFixture({ plugins: [] })
+  try {
+    writeFileSync(path.join(fixture.root, 'package.json'), `${JSON.stringify({ name: '@dsh-external/dsh-redteam-model', version: '1.0.0' }, null, 2)}\n`, 'utf8')
+    const self = '@dsh-external/dsh-redteam-model'
+    const manifest = JSON.parse(readFileSync(fixture.profilePackage, 'utf8'))
+    manifest.dependencies[self] = `link:${fixture.root}`
+    manifest.dsh.profile.bundles = ['@deepseek-ai/dsh-base', self, '@deepseek-ai/dsh-web-app']
+    writeFileSync(fixture.profilePackage, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
+
+    assert.match(nudgeRecompose(fixture.root), /moved to the end/)
+    assert.deepEqual(fixture.bundles(), ['@deepseek-ai/dsh-base', '@deepseek-ai/dsh-web-app', self])
+    // Repeatable: the next call moves it the other way, so the ordered list
+    // keeps changing — which is the whole signal the watcher reacts to.
+    assert.match(nudgeRecompose(fixture.root), /moved to the front/)
+    assert.deepEqual(fixture.bundles(), [self, '@deepseek-ai/dsh-base', '@deepseek-ai/dsh-web-app'])
+    // The set never changes: ordering between bundles carries no meaning.
+    assert.equal(new Set(fixture.bundles()).size, 3)
+  } finally {
+    fixture.cleanup()
+  }
+})
+
+test('nudgeRecompose refuses when the bundle is not part of the profile', () => {
+  const fixture = createManagerFixture({ plugins: [] })
+  try {
+    writeFileSync(path.join(fixture.root, 'package.json'), `${JSON.stringify({ name: '@dsh-external/dsh-redteam-model', version: '1.0.0' }, null, 2)}\n`, 'utf8')
+    assert.throws(() => nudgeRecompose(fixture.root), /not listed in dsh\.profile\.bundles/)
+  } finally {
+    fixture.cleanup()
   }
 })
 

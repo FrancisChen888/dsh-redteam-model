@@ -17,7 +17,7 @@ import {
   effectiveConversationViewSettings,
   registerConversationViewSettings,
 } from './conversationViewSettings.ts'
-import { activeProfile, deployGlobalAgents, deployModes, dshHome, getStatus, healPresetPlanePlugins, hostRuntimeScope, installOne, isBundledCollection, linkPluginPeers, profileWebDir, reconcileProfileBundles, repairMode, scanModes, scanPlugins, uninstallModes, uninstallOne } from './manager.ts'
+import { activeProfile, deployGlobalAgents, deployModes, dshHome, getStatus, healPresetPlanePlugins, hostRuntimeScope, nudgeRecompose, installOne, isBundledCollection, linkPluginPeers, profileWebDir, reconcileProfileBundles, repairMode, scanModes, scanPlugins, uninstallModes, uninstallOne } from './manager.ts'
 import { detectEngineFlavor, isPackagedDesktopHost, normalizePresetComposition } from './manager.ts'
 import { ENGINE_PACKAGES, NORMALIZER_VERSION, rewriteCompositionText } from './normalize.ts'
 import { OperationQueue } from './operations.ts'
@@ -26,7 +26,7 @@ import type { HostConnectionHandle } from './types.ts'
 
 export { inspectHealth } from './health.ts'
 export { OperationQueue }
-export { activeProfile, deployGlobalAgents, deployModes, dshHome, getStatus, healPresetPlanePlugins, hostRuntimeScope, installOne, isBundledCollection, linkPluginPeers, profileWebDir, reconcileProfileBundles, repairMode, scanModes, scanPlugins, uninstallModes, uninstallOne }
+export { activeProfile, deployGlobalAgents, deployModes, dshHome, getStatus, healPresetPlanePlugins, hostRuntimeScope, nudgeRecompose, installOne, isBundledCollection, linkPluginPeers, profileWebDir, reconcileProfileBundles, repairMode, scanModes, scanPlugins, uninstallModes, uninstallOne }
 export { detectEngineFlavor, isPackagedDesktopHost, normalizePresetComposition }
 export { ENGINE_PACKAGES, NORMALIZER_VERSION, rewriteCompositionText }
 export { registerModelRpc }

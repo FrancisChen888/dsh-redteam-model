@@ -16,6 +16,8 @@ const CSS_TEXT = String.raw`
 
 /* ---- header ---- */
 .dsh-rtm-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.dsh-rtm-head-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.dsh-rtm-note{font-size:12px;color:var(--dsh-color-fg-muted, #6b7280);margin:2px 0 8px}
 .dsh-rtm-title{margin:0;font-size:17px;line-height:26px;font-weight:700;letter-spacing:-.01em}
 .dsh-rtm-sub{margin:3px 0 0;color:var(--dsw-alias-label-secondary,#57606a);font-size:11.5px;line-height:18px;max-width:680px}
 .dsh-rtm-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
