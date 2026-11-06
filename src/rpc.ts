@@ -11,6 +11,7 @@ import {
   deployModes,
   getStatus,
   installOne,
+  nudgeRecompose,
   repairMode,
   requireMode,
   requirePlugin,
@@ -29,7 +30,7 @@ import {
   type RpcResult,
 } from './types.ts'
 
-const ENDPOINTS = new Set(['status', 'operation/start', 'operation/cancel', 'operations/clear'])
+const ENDPOINTS = new Set(['status', 'operation/start', 'operation/cancel', 'operations/clear', 'recompose'])
 const OPERATION_KINDS = new Set<OperationKind>(['deploy-modes', 'remove-modes', 'install', 'update', 'uninstall', 'repair'])
 /** Upper bound for one batch; must cover a full first-run install of every delivered plugin. */
 const MAX_TARGETS = 32
@@ -180,6 +181,13 @@ async function handleEndpoint(endpoint: string, rawPayload: unknown, queue: Oper
   if (endpoint === 'status') {
     const payload = rawPayload == null ? {} : asObject(rawPayload)
     return ok({ ...getStatus(queue.list()), health: await inspectHealth(ctx, undefined, payload.force === true) })
+  }
+
+  if (endpoint === 'recompose') {
+    // Trade a manifest-level change for a live recomposition: `dsh-hmr` only
+    // re-imports replaced files when the ordered bundle list moves, and an
+    // update in place never moves it.
+    return ok({ detail: nudgeRecompose() })
   }
 
   if (endpoint === 'operations/clear') {

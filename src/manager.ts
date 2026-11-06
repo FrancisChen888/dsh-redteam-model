@@ -463,6 +463,37 @@ export function healPresetPlanePlugins(root = locateRoot()): string | null {
   return `restored preset-plane dependencies: ${restored.join(', ')}`
 }
 
+/**
+ * Force the host to recompose the profile without a restart.
+ *
+ * `dsh-hmr` swaps plugins whose files changed on disk, but only when a
+ * recomposition runs — and the only manifest signal it watches is the ORDERED
+ * `dsh.profile.bundles` list ("manifest 通知仅在有序的 dsh.profile.bundles
+ * 列表变化时触发重载"). A version upgrade of an already-listed bundle changes
+ * neither the list nor its length, so an update of this collection sits on
+ * disk until the next restart. Moving our own entry to the other end is a
+ * no-op for composition (order between bundles carries no meaning) and a real
+ * change for the watcher, so the recomposition it triggers re-imports the
+ * replaced files. Alternating the end keeps the action repeatable.
+ * @param root - collection root used to read this package's own name.
+ * @returns a note describing the signal that was written.
+ */
+export function nudgeRecompose(root = locateRoot()): string {
+  const profile = readProfile()
+  const bundles = profile?.dsh?.profile?.bundles
+  const self = collectionPackageName(root)
+  if (profile === null || self === undefined) throw new Error('active profile manifest cannot be read')
+  if (!Array.isArray(bundles)) throw new Error('active profile has no dsh.profile.bundles list')
+  if (!bundles.includes(self)) throw new Error(`${self} is not listed in dsh.profile.bundles — nothing to recompose`)
+  const rest = bundles.filter(candidate => candidate !== self)
+  const atEnd = bundles[bundles.length - 1] === self
+  const next = atEnd ? [self, ...rest] : [...rest, self]
+  if (next.join('\n') === bundles.join('\n')) throw new Error('bundle order cannot change: this bundle is the only entry')
+  profile.dsh!.profile!.bundles = next
+  writeProfileWithBackup(profile)
+  return `recompose signal written: ${self} moved to the ${atEnd ? 'front' : 'end'} of ${next.length} bundles`
+}
+
 function readInstalledVersion(plugin: PluginDescriptor): string | undefined {
   const file = path.join(profileWebDir(), 'node_modules', '@dsh-external', plugin.name, 'package.json')
   if (!existsSync(file)) return undefined

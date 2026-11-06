@@ -109,6 +109,21 @@ try {
     return envelope.result.value.health
   }
   assert.equal((await status()).runtimeHealth, 'healthy')
+  // The live-update path: a version upgrade replaces files in place, but the
+  // host only re-imports them when a recomposition runs, and the watcher only
+  // fires on an ordered bundle-list change. The manager's nudge has to produce
+  // exactly that, and nothing else about the profile may move.
+  const recompose = await fetch(`${base}api/dsh-redteam-model/recompose`, {
+    method: 'POST', headers: { 'content-type': 'application/json', cookie, origin: base.slice(0, -1) },
+    body: JSON.stringify({ type: 'client-request', rpcId: 'bundle-test-2', method: 'recompose', payload: {} }),
+  })
+  assert.equal(recompose.status, 200)
+  const recomposeEnvelope = await recompose.json()
+  assert.equal(recomposeEnvelope.result?.ok, true, JSON.stringify(recomposeEnvelope))
+  const nudged = JSON.parse(fs.readFileSync(path.join(profileDirectory, 'package.json')))
+  assert.deepEqual([...nudged.dsh.profile.bundles].sort(), [...initialProfile.dsh.profile.bundles].sort(), 'the set of bundles must not change')
+  assert.notDeepEqual(nudged.dsh.profile.bundles, initialProfile.dsh.profile.bundles, 'the ordered list must change to trigger a recomposition')
+
   fs.appendFileSync(path.join(model, 'modes/redteam/skills/router-playbook/SKILL.md'), '\n')
   assert.equal((await status(true)).bundleIntegrity, 'incomplete', 'manual refresh must not reuse a stale integrity result')
 

@@ -6,6 +6,7 @@
  */
 import {
   type AdminClearResult,
+  type AdminRecomposeResult,
   type AdminConnectionHandle,
   type AdminOperationCancelResult,
   type AdminOperationStart,
@@ -19,6 +20,7 @@ export interface AdminFace {
   start(request: AdminOperationStart): Promise<AdminOperationStartResult>
   cancel(id: string): Promise<AdminOperationCancelResult>
   clear(): Promise<AdminClearResult>
+  recompose(): Promise<AdminRecomposeResult>
 }
 
 function messageOf(error: unknown): string {
@@ -54,12 +56,17 @@ export class AdminController {
     return this.call<AdminClearResult>('operations/clear', {})
   }
 
+  async recompose(): Promise<AdminRecomposeResult> {
+    return this.call<AdminRecomposeResult>('recompose', {})
+  }
+
   inject(): AdminFace {
     return {
       status: force => this.status(force),
       start: request => this.start(request),
       cancel: id => this.cancel(id),
       clear: () => this.clear(),
+      recompose: () => this.recompose(),
     }
   }
 
